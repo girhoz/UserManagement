@@ -12,17 +12,17 @@ namespace API.ViewModels
         public string Email { get; set; }
         public string Password { get; set; }
         public int App_Type { get; set; }
-        public int Role_Id { get; set; }
-        public string App_Name { get; set; }
-        public string Role_Name { get; set; }
+        public int RoleId { get; set; }
+        public string AppName { get; set; }
+        public string RoleName { get; set; }
         public string FullName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
         public DateTime? BirthDate { get; set; }
         public string PhoneNumber { get; set; }
-        public int Religion { get; set; }
-        public string Religion_Name { get; set; }
+        public int ReligionId { get; set; }
+        public string ReligionName { get; set; }
         public bool WorkStatus { get; set; }
     }
 }

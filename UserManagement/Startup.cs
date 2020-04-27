@@ -35,6 +35,7 @@ namespace UserManagement
             services.AddScoped<RoleRepository>();
             services.AddScoped<ApplicationRepository>();
             services.AddScoped<ReligionRepository>();
+            services.AddScoped<UserDetailsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

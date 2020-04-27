@@ -23,12 +23,14 @@ namespace API.Controllers
     {
         private readonly UserRepository _userRepository;
         private readonly RoleRepository _roleRepository;
+        private readonly UserDetailsRepository _userDetailsRepository;
         public IConfiguration _configuration;
 
-        public UserController(UserRepository userRepository, RoleRepository roleRepository, IConfiguration configuration) : base(userRepository)
+        public UserController(UserRepository userRepository, RoleRepository roleRepository, UserDetailsRepository userDetailsRepository, IConfiguration configuration) : base(userRepository)
         {
             this._roleRepository = roleRepository;
             this._userRepository = userRepository;
+            this._userDetailsRepository = userDetailsRepository;
             this._configuration = configuration;
         }
 
@@ -57,7 +59,19 @@ namespace API.Controllers
                 if (result != null)
                 {
                     //Adding role member to the user 
-                    await _roleRepository.InsertUserRoles(userVM.Id, userVM.Role_Id);
+                    await _roleRepository.InsertUserRoles(user.Id, 1);
+                    //await _roleRepository.InsertUserRoles(user.Id, userVM.Role_Id);
+                    //Adding user detail to the user
+                    UserDetails userDetails = new UserDetails();
+                    userDetails.Id = user.Id;
+                    userDetails.FullName = userVM.FullName;
+                    userDetails.FirstName = userVM.FirstName;
+                    userDetails.LastName = userVM.LastName;
+                    userDetails.Address = userVM.Address;
+                    userDetails.BirthDate = userVM.BirthDate;
+                    userDetails.PhoneNumber = userVM.PhoneNumber;
+                    userDetails.ReligionId = userVM.ReligionId;
+                    await _userDetailsRepository.Post(userDetails);
                     return Ok("Register Succesfull!");
                 }
                 else
@@ -72,36 +86,49 @@ namespace API.Controllers
         public async Task<ActionResult> Login(UserVM userVM)
         {
             var getUser = _userRepository.GetByEmail(userVM.Email);
-            var check = BCryptHelper.CheckPassword(userVM.Password, getUser.Password);
-            if (getUser == null || check == false)
+            if (getUser == null)
             {
-                return BadRequest("Username or Email Wrong!");
+                return BadRequest("Email Wrong!");
             }
             else
             {
-                //Get Role From User Login
-                var dataRole = await _roleRepository.GetRole(getUser.Id);
-                foreach (Role item in dataRole)
+                var check = BCryptHelper.CheckPassword(userVM.Password, getUser.Password);
+                if (check == false)
                 {
-                    userVM.Role_Name = item.Name;
+                    return BadRequest("Password Wrong!"); ;
                 }
-                //Build JWToken
-                var claims = new List<Claim>
+                else
+                {
+                    //Get Role From User Login
+                    var dataRole = await _roleRepository.GetRole(getUser.Id);
+                    foreach (Role item in dataRole)
+                    {
+                        userVM.RoleName = item.Name;
+                    }
+                    //Build JWToken
+                    var claims = new List<Claim>
                         {
                             new Claim("Email", userVM.Email),
-                            new Claim("Role", userVM.Role_Name),
+                            new Claim("Role", userVM.RoleName),
                             new Claim("App", getUser.App_Type.ToString())
                         };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
-                var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
+                    var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
 
-                return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                }
             }
+        }
 
+        [HttpGet]
+        [Route("Details")]
+        public async Task<IEnumerable<UserVM>> Details()
+        {
+            return await _userRepository.GetDetails();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using API.Context;
 using API.Models;
+using API.ViewModels;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -23,10 +24,19 @@ namespace API.Repositories.Data
             _myContext = MyContext;
         }
 
-
         public User GetByEmail(string email)
         {
             return _myContext.User.Where(s => s.Email == email).FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<UserVM>> GetDetails()
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyNetCoreConnection")))
+            {
+                var spName = "SP_GetDetails_AllTable";
+                var data = await connection.QueryAsync<UserVM>(spName, parameters, commandType: CommandType.StoredProcedure);
+                return data;
+            }
         }
     }
 }

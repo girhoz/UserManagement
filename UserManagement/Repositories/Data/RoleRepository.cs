@@ -25,7 +25,7 @@ namespace API.Repositories.Data
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("MyNetCoreConnection")))
             {
-                var spName = "SP_Insert_UserRoles";
+                var spName = "SP_Insert_RoleUserRoles";
                 parameters.Add("@UserId", userId);
                 parameters.Add("@RoleId", roleId);
                 var data = await connection.QueryAsync<UserRoles>(spName, parameters, commandType: CommandType.StoredProcedure);
