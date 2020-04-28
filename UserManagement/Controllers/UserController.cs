@@ -14,19 +14,20 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : BaseController<User, UserRepository>
+    public class UserController : ControllerBase
     {
         private readonly UserRepository _userRepository;
         private readonly RoleRepository _roleRepository;
         private readonly UserDetailsRepository _userDetailsRepository;
         public IConfiguration _configuration;
 
-        public UserController(UserRepository userRepository, RoleRepository roleRepository, UserDetailsRepository userDetailsRepository, IConfiguration configuration) : base(userRepository)
+        public UserController(UserRepository userRepository, RoleRepository roleRepository, UserDetailsRepository userDetailsRepository, IConfiguration configuration)
         {
             this._roleRepository = roleRepository;
             this._userRepository = userRepository;
@@ -34,6 +35,7 @@ namespace API.Controllers
             this._configuration = configuration;
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
         [Route("Register")]
         public async Task<ActionResult> Register(UserVM userVM)
@@ -124,11 +126,77 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
         [Route("Details")]
         public async Task<IEnumerable<UserVM>> Details()
         {
             return await _userRepository.GetDetails();
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Edit(int id, UserVM userVM)
+        {
+            if (userVM.Email != null || userVM.Password != null || userVM.App_Type != 0)
+            {
+                //Update User
+                var user = await _userRepository.Get(id);
+                if (userVM.Password != null)
+                {
+                    var pass = userVM.Password;
+                    var salt = BCryptHelper.GenerateSalt(12);
+                    user.Password = BCryptHelper.HashPassword(pass, salt);
+                }
+                if (userVM.App_Type != 0)
+                {
+                    user.App_Type = userVM.App_Type;
+                }
+                await _userRepository.Put(user);
+            }
+            //Update User Details
+            var userDetails = await _userDetailsRepository.Get(id);
+            if (userVM.FullName != null)
+            {
+                userDetails.FullName = userVM.FullName;
+            }
+            if (userVM.FirstName != null)
+            {
+                userDetails.FirstName = userVM.FirstName;
+            }
+            if (userVM.LastName != null)
+            {
+                userDetails.LastName = userVM.LastName;
+            }
+            if (userVM.Address != null)
+            {
+                userDetails.Address = userVM.Address;
+            }
+            if (userVM.BirthDate != null)
+            {
+                userDetails.BirthDate = userVM.BirthDate;
+            }
+            if (userVM.PhoneNumber != null)
+            {
+                userDetails.PhoneNumber = userVM.PhoneNumber;
+            }
+            if (userVM.ReligionId != 0)
+            {
+                userDetails.ReligionId = userVM.ReligionId;
+            }
+            if (userVM.WorkStatus != userDetails.WorkStatus)
+            {
+                userDetails.WorkStatus = userVM.WorkStatus;
+            }
+            var result = await _userDetailsRepository.Put(userDetails);
+            if (result != null)
+            {
+                return Ok("Update Succesfull");
+            }
+            else
+            {
+                return BadRequest("Update Failed");
+            }
         }
     }
 }

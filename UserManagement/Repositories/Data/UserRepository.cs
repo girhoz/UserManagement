@@ -14,7 +14,6 @@ namespace API.Repositories.Data
 {
     public class UserRepository : GeneralRepository<User, MyContext>
     {
-        DynamicParameters parameters = new DynamicParameters();
         IConfiguration _configuration { get; }
         private readonly MyContext _myContext;
 
@@ -34,7 +33,7 @@ namespace API.Repositories.Data
             using (var connection = new SqlConnection(_configuration.GetConnectionString("MyNetCoreConnection")))
             {
                 var spName = "SP_GetDetails_AllTable";
-                var data = await connection.QueryAsync<UserVM>(spName, parameters, commandType: CommandType.StoredProcedure);
+                var data = await connection.QueryAsync<UserVM>(spName, commandType: CommandType.StoredProcedure);
                 return data;
             }
         }

@@ -48,11 +48,7 @@ namespace API.Base
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, TEntity entity)
         {
-            var put = await _repository.Get(id);
-            if (put == null)
-            {
-                return BadRequest();
-            }
+            entity.Id = id;
             await _repository.Put(entity);
             return Ok("Update Succesfull");
         }
