@@ -24,7 +24,7 @@ namespace Client.Controllers
         
         public IActionResult Index()
         {
-            ViewBag.PacketText = HttpContext.Session.GetString("Email");
+            ViewBag.PacketText = HttpContext.Session.GetString("Name");
             return View();
         }
 
@@ -69,6 +69,35 @@ namespace Client.Controllers
             }
         }
 
+        public JsonResult GetById(int Id)
+        {
+            //Get the session with token and set authorize bearer token to API header
+            client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("JWToken"));
+            IEnumerable<UserVM> userVM = null;
+            var responseTask = client.GetAsync("User/" + Id); //Access data from department API
+            responseTask.Wait(); //Waits for the Task to complete execution.
+            var result = responseTask.Result;
+            if (result.IsSuccessStatusCode) // if access success
+            {
+                var readTask = result.Content.ReadAsAsync<IList<UserVM>>(); //Get all the data from the API
+                readTask.Wait();
+                userVM = readTask.Result;
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Server Error");
+            }
+            return Json(userVM);
+        }
+
+        public JsonResult Delete(int Id)
+        {
+            //Get the session with token and set authorize bearer token to API header
+            client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("JWToken"));
+            var result = client.DeleteAsync("User/" + Id).Result;
+            return Json(result);
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -93,6 +122,7 @@ namespace Client.Controllers
                 HttpContext.Session.SetString("Email", info[0]);
                 HttpContext.Session.SetString("Role", info[1]);
                 HttpContext.Session.SetString("App", info[2]);
+                HttpContext.Session.SetString("Name", info[3]);
                 HttpContext.Session.SetString("JWToken", token);
                 if (info[1] == "Admin")
                 {
@@ -113,13 +143,14 @@ namespace Client.Controllers
             HttpContext.Session.Remove("Email");
             HttpContext.Session.Remove("Role");
             HttpContext.Session.Remove("App");
+            HttpContext.Session.Remove("Name");
             return RedirectToAction("Login", "Users");
         }
 
 
         protected string[] GetTokenInfo(string token)
         {
-            string[] result = new string[3];
+            string[] result = new string[4];
             string secret = "sdfsdfsjdbf78sdyfssdfsdfbuidfs98gdfsdbf";
             var key = Encoding.ASCII.GetBytes(secret);
             var handler = new JwtSecurityTokenHandler();
@@ -135,6 +166,7 @@ namespace Client.Controllers
             result[0] = data.SingleOrDefault(p => p.Type == "Email").Value;
             result[1] = data.SingleOrDefault(p => p.Type == "Role").Value;
             result[2] = data.SingleOrDefault(p => p.Type == "App").Value;
+            result[3] = data.SingleOrDefault(p => p.Type == "Name").Value;
             return result;
         }
 

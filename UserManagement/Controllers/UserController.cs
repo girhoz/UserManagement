@@ -117,12 +117,16 @@ namespace API.Controllers
                     {
                         userVM.RoleName = item.Name;
                     }
+                    //Get Data From User Detail
+                    var detailUser = await _userDetailsRepository.Get(getUser.Id);
+
                     //Build JWToken
                     var claims = new List<Claim>
                         {
                             new Claim("Email", userVM.Email),
                             new Claim("Role", userVM.RoleName),
-                            new Claim("App", getUser.App_Type.ToString())
+                            new Claim("App", getUser.App_Type.ToString()),
+                            new Claim("Name", detailUser.FullName)
                         };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -158,7 +162,7 @@ namespace API.Controllers
             {
                 //Update User
                 var user = await _userRepository.Get(id);
-                if (userVM.Password != null)
+                if (userVM.Password != null && userVM.Password == user.Password)
                 {
                     var pass = userVM.Password;
                     var salt = BCryptHelper.GenerateSalt(12);
