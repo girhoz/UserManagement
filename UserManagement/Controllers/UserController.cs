@@ -61,18 +61,28 @@ namespace API.Controllers
                 if (result != null)
                 {
                     //Adding role member to the user 
-                    await _roleRepository.InsertUserRoles(user.Id, 1);
-                    //await _roleRepository.InsertUserRoles(user.Id, userVM.Role_Id);
+                    await _roleRepository.InsertUserRoles(user.Id, userVM.RoleId);
                     //Adding user detail to the user
                     UserDetails userDetails = new UserDetails();
                     userDetails.Id = user.Id;
+                    if(userVM.FullName == null)
+                    {
+                        userVM.FullName = userVM.FirstName + " " + userVM.LastName;
+                    }
                     userDetails.FullName = userVM.FullName;
                     userDetails.FirstName = userVM.FirstName;
                     userDetails.LastName = userVM.LastName;
                     userDetails.Address = userVM.Address;
                     userDetails.BirthDate = userVM.BirthDate;
                     userDetails.PhoneNumber = userVM.PhoneNumber;
-                    userDetails.ReligionId = userVM.ReligionId;
+                    if (userVM.ReligionId != 0)
+                    {
+                        userDetails.ReligionId = userVM.ReligionId;
+                    }
+                    else
+                    {
+                        userDetails.ReligionId = 1;
+                    }                  
                     await _userDetailsRepository.Post(userDetails);
                     return Ok("Register Succesfull!");
                 }
@@ -128,10 +138,16 @@ namespace API.Controllers
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
-        [Route("Details")]
         public async Task<IEnumerable<UserVM>> Details()
         {
             return await _userRepository.GetDetails();
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet("{id}")]
+        public async Task<IEnumerable<UserVM>> DetailsById(int id)
+        {
+            return await _userRepository.GetDetailsById(id);
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -197,6 +213,13 @@ namespace API.Controllers
             {
                 return BadRequest("Update Failed");
             }
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<User>> Delete(int id)
+        {
+            return await _userRepository.Delete(id);
         }
     }
 }

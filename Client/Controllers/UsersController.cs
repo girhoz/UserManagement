@@ -24,7 +24,49 @@ namespace Client.Controllers
         
         public IActionResult Index()
         {
+            ViewBag.PacketText = HttpContext.Session.GetString("Email");
             return View();
+        }
+
+        public JsonResult LoadUser()
+        {
+            IEnumerable<UserVM> userVM = null;
+            //Get the session with token and set authorize bearer token to API header
+            client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("JWToken"));
+            var responseTask = client.GetAsync("User"); //Access data from employees API
+            responseTask.Wait(); //Waits for the Task to complete execution.
+            var result = responseTask.Result;
+            if (result.IsSuccessStatusCode) // if access success
+            {
+                var readTask = result.Content.ReadAsAsync<IList<UserVM>>(); //Get all the data from the API
+                readTask.Wait();
+                userVM = readTask.Result;
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Server Error");
+            }
+            return Json(userVM);
+        }
+
+        public JsonResult InsertOrUpdate(UserVM userVM)
+        {
+            //Get the session with token and set authorize bearer token to API header
+            client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("JWToken"));
+            var myContent = JsonConvert.SerializeObject(userVM);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            if (userVM.Id == 0)
+            {
+                var result = client.PostAsync("User/Register", byteContent).Result;
+                return Json(result);
+            }
+            else
+            {
+                var result = client.PutAsync("User/" + userVM.Id, byteContent).Result;
+                return Json(result);
+            }
         }
 
         [HttpGet]
