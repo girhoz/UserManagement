@@ -20,7 +20,14 @@ namespace Client.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var role = HttpContext.Session.GetString("Role");
+            ViewBag.Role = role;
+            ViewBag.PacketText = HttpContext.Session.GetString("Name");
+            if (role == "Admin")
+            {
+                return View();
+            }
+            return RedirectToAction("AccessDenied", "Users");
         }
 
         public JsonResult LoadApplication()

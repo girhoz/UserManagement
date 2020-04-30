@@ -123,6 +123,7 @@ namespace API.Controllers
                     //Build JWToken
                     var claims = new List<Claim>
                         {
+                            new Claim("Id", getUser.Id.ToString()),
                             new Claim("Email", userVM.Email),
                             new Claim("Role", userVM.RoleName),
                             new Claim("App", getUser.App_Type.ToString()),
@@ -162,13 +163,13 @@ namespace API.Controllers
             {
                 //Update User
                 var user = await _userRepository.Get(id);
-                if (userVM.Password != null && userVM.Password == user.Password)
+                if (userVM.Password != user.Password)
                 {
                     var pass = userVM.Password;
                     var salt = BCryptHelper.GenerateSalt(12);
                     user.Password = BCryptHelper.HashPassword(pass, salt);
                 }
-                if (userVM.App_Type != 0)
+                if (userVM.App_Type != user.App_Type && userVM.App_Type != 0)
                 {
                     user.App_Type = userVM.App_Type;
                 }
@@ -200,7 +201,7 @@ namespace API.Controllers
             {
                 userDetails.PhoneNumber = userVM.PhoneNumber;
             }
-            if (userVM.ReligionId != 0)
+            if (userVM.ReligionId != userDetails.ReligionId && userVM.ReligionId != 0)
             {
                 userDetails.ReligionId = userVM.ReligionId;
             }

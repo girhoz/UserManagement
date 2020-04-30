@@ -3,9 +3,10 @@
     Layout = null;
 }
 
-@{ string email = ViewBag.PacketText;
-   string welcome = "Hello " + ViewBag.PacketText + "!";
-
+@{ 
+    string email = ViewBag.PacketText;
+    string welcome = "Hello " + ViewBag.PacketText + "!";
+    string role = ViewBag.Role;
 }
 
 <!DOCTYPE html>
@@ -104,7 +105,7 @@
                                         </div>
                                     </li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
+                                    <li><a asp-controller="Users" asp-action="EditAccount"><i class="ti-user"></i> My Profile</a></li>
                                     <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
                                     <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
                                     <li role="separator" class="divider"></li>
@@ -139,7 +140,7 @@
                     <div class="profile-text">
                         <a href="#" class="dropdown-toggle link u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">@welcome<span class="caret"></span></a>
                         <div class="dropdown-menu animated flipInY">
-                            <a href="#" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
+                            <a  asp-controller="Users" asp-action="EditAccount" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
                             <a href="#" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>
                             <a href="#" class="dropdown-item"><i class="ti-email"></i> Inbox</a>
                             <div class="dropdown-divider"></div> <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
@@ -152,10 +153,14 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li>
-                            <a asp-controller="Users" asp-action="Index"><i class="mdi mdi-account"></i> Users</a>
-                            <a asp-controller="Roles" asp-action="Index"><i class="mdi mdi-account-key"></i> Roles</a>
-                            <a asp-controller="Applications" asp-action="Index"><i class="mdi mdi-application"></i> Applications</a>
-                            <a asp-controller="Religions" asp-action="Index"><i class="mdi mdi-church"></i> Religions</a>
+                            @if (role == "Admin")
+                            {
+                                <a asp-controller="Users" asp-action="Index"><i class="mdi mdi-table"></i> Users</a>
+                                <a asp-controller="Roles" asp-action="Index"><i class="mdi mdi-account-key"></i> Roles</a>
+                                <a asp-controller="Applications" asp-action="Index"><i class="mdi mdi-application"></i> Applications</a>
+                                <a asp-controller="Religions" asp-action="Index"><i class="mdi mdi-church"></i> Religions</a>
+                            }
+                            <a asp-controller="Users" asp-action="EditAccount"><i class="mdi mdi-account-circle"></i> My Profile</a>
                         </li>
                     </ul>
                 </nav>

@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "EditAccount";
+    Layout = "~/Views/Layout/Layout.cshtml";
+}
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="m-b-30">
+                        <h2 style="text-align: center;">My Profile</h2>
+                    </div>
+                    <form>
+                        <div class="row form-group">
+                            <div class="col">
+                                <label for="Email" id="EmailLabel">Email</label>
+                                <input name="Email" class="form-control" type="text" placeholder="Email" id="Email" />
+                                <input name="Id" class="form-control" type="hidden" id="Id" />
+                            </div>
+                            <div class="col">
+                                <label for="Password" id="PasswordLabel">Password</label>
+                                <input name="Password" class="form-control" type="password" placeholder="Password" id="Password" />
+                                <input id="check3" name="check3" type="checkbox" value="show password" onclick="ShowPass()">
+                                <label class="check" for="check3">Show password</label>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col">
+                                <label for="FirstName">First Name</label>
+                                <input name="FirstName" class="form-control" placeholder="First Name" type="text" id="FirstName" />
+                            </div>
+                            <div class="col">
+                                <label for="LastName">Last Name</label>
+                                <input name="LastName" class="form-control" placeholder="Last Name" type="text" id="LastName" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col">
+                                <label for="FullName">Full Name</label>
+                                <input name="FullName" class="form-control" placeholder="Full Name" type="text" id="FullName" />
+                            </div>
+                            <div class="col">
+                                <label for="ReligionOption">Religion</label>
+                                <select class="form-control" id="ReligionOption" name="ReligionOption"></select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col">
+                                <label for="PhoneNumber">Phone Number</label>
+                                <input name="PhoneNumber" class="form-control" placeholder="Phone Number" type="text" id="PhoneNumber" />
+                            </div>
+                            <div class="col">
+                                <label for="BirthDate">Birth Date</label>
+                                <input name="BirthDate" class="form-control" type="Date" id="BirthDate" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Address">Address</label>
+                            <textarea id="Address" class="form-control"></textarea>
+                        </div>
+                        <div>
+                            <button onclick="Edit();" type="button" class="btn pull-right hidden-sm-down btn-warning" style="margin-bottom:10px">
+                                <i class="mdi mdi-pen"></i> Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/Mini AdminPro/assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="~/Content/Mini AdminPro/assets/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="~/Content/Mini AdminPro/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="~/Content/Mini AdminPro/main/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="~/Content/Mini AdminPro/main/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="~/Content/Mini AdminPro/main/js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="~/Content/Mini AdminPro/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="~/Content/Mini AdminPro/main/js/custom.min.js"></script>
+    <!-- This is data table -->
+    <script src="~/Content/Mini AdminPro/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+
+    @*Script for department (include modal)*@
+    <script src="~/Scripts/AccountScript.js"></script>
+
+    @*Script for moment (formate date)*@
+    <script src="~/Scripts/moment.js"></script>
+
+    @*Script for sweet alert*@
+    <script src="~/Scripts/Sweetalert2.js"></script>
+
+    <!-- start - This is for export functionality only -->
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <!-- end - This is for export functionality only -->
+    <!-- ============================================================== -->
+    <!-- Style switcher -->
+    <!-- ============================================================== -->
+    <script src="~/Content/Mini AdminPro/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+}
+
+
+
+

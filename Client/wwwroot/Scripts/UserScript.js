@@ -36,7 +36,7 @@ $(document).ready(function () {
             { "data": "religionName", "name": "Religion" },
             {
                 data: null, render: function (data, type, row) {
-                    return " <td><button type='button' class='btn btn-warning' Id='Update' onclick=GetById('" + row.id + "');>Edit</button> <button type='button' class='btn btn-danger' Id='Delete' onclick=Delete('" + row.id + "');>Delete</button ></td >";
+                    return '<button type="button" class="btn btn-warning" id="BtnEdit" data-toggle="tooltip" data-placement="top" title="Edit" onclick="return GetById(' + row.id + ')"><i class="mdi mdi-pencil"></i></button> &nbsp; <button type="button" class="btn btn-danger" id="BtnDelete" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return Delete(' + row.id + ')"><i class="mdi mdi-delete"></i></button>';
                 }
             }
         ]
@@ -116,7 +116,8 @@ function ShowPass() {
 function ShowModal() {
     $("#createModal").modal('show');
     $('#Email').attr('readonly', false);
-    //$('#Password').attr('readonly', true);
+    $('#Password').attr('readonly', true);
+    $('#RoleOption').attr('disabled', false);
     $('#Id').val('');
     $('#Email').val('');
     $('#Password').val('');
@@ -180,20 +181,21 @@ function GetById(Id) {
         async: false,
         success: function (result) {
             debugger;
-            $('#Id').val(result[0].id);
+            $('#Id').val(result.id);
             $('#Email').attr('readonly', true);
-            $('#Email').val(result[0].email);
+            $('#Email').val(result.email);
             $('#Password').attr('readonly', false);
-            $('#Password').val(result[0].password);
-            $('#FullName').val(result[0].fullName);
-            $('#FirstName').val(result[0].firstName);
-            $('#LastName').val(result[0].lastName);
-            $('#BirthDate').val(moment(result[0].birthDate).format('YYYY-MM-DD'));
-            $('#PhoneNumber').val(result[0].phoneNumber);
-            $('#Address').val(result[0].address);
-            $('#RoleOption').val(result[0].roleId);
-            $('#AppOption').val(result[0].app_Type);
-            $('#ReligionOption').val(result[0].religionId);
+            $('#Password').val(result.password);
+            $('#FullName').val(result.fullName);
+            $('#FirstName').val(result.firstName);
+            $('#LastName').val(result.lastName);
+            $('#BirthDate').val(moment(result.birthDate).format('YYYY-MM-DD'));
+            $('#PhoneNumber').val(result.phoneNumber);
+            $('#Address').val(result.address);
+            $('#RoleOption').attr('disabled', true);
+            $('#RoleOption').val(result.roleId);
+            $('#AppOption').val(result.app_Type);
+            $('#ReligionOption').val(result.religionId);
             $("#createModal").modal('show');
             $("#Save").hide();
             $('#Edit').show();

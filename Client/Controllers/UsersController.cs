@@ -24,8 +24,14 @@ namespace Client.Controllers
         
         public IActionResult Index()
         {
+            var role = HttpContext.Session.GetString("Role");
+            ViewBag.Role = role;
             ViewBag.PacketText = HttpContext.Session.GetString("Name");
-            return View();
+            if (role == "Admin")
+            {
+                return View();
+            }
+            return RedirectToAction("AccessDenied", "Users");
         }
 
         public JsonResult LoadUser()
@@ -73,7 +79,7 @@ namespace Client.Controllers
         {
             //Get the session with token and set authorize bearer token to API header
             client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("JWToken"));
-            IEnumerable<UserVM> userVM = null;
+            UserVM userVM = null;
             var responseTask = client.GetAsync("User/" + Id); //Access data from department API
             responseTask.Wait(); //Waits for the Task to complete execution.
             var result = responseTask.Result;
@@ -81,7 +87,7 @@ namespace Client.Controllers
             {
                 var readTask = result.Content.ReadAsAsync<IList<UserVM>>(); //Get all the data from the API
                 readTask.Wait();
-                userVM = readTask.Result;
+                userVM = readTask.Result[0];
             }
             else
             {
@@ -119,7 +125,7 @@ namespace Client.Controllers
                 var token = "Bearer " + data;
                 var info = GetTokenInfo(data);
                 //Add token to session and role to session
-                HttpContext.Session.SetString("Email", info[0]);
+                HttpContext.Session.SetString("Id", info[0]);
                 HttpContext.Session.SetString("Role", info[1]);
                 HttpContext.Session.SetString("App", info[2]);
                 HttpContext.Session.SetString("Name", info[3]);
@@ -130,7 +136,7 @@ namespace Client.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Users");
+                    return RedirectToAction("EditAccount", "Users");
                 }
 
             }
@@ -140,13 +146,46 @@ namespace Client.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("JWToken");
-            HttpContext.Session.Remove("Email");
+            HttpContext.Session.Remove("Id");
             HttpContext.Session.Remove("Role");
             HttpContext.Session.Remove("App");
             HttpContext.Session.Remove("Name");
             return RedirectToAction("Login", "Users");
         }
 
+        public IActionResult EditAccount()
+        {
+            var role = HttpContext.Session.GetString("Role");
+            ViewBag.Role = role;
+            ViewBag.PacketText = HttpContext.Session.GetString("Name");
+            if (role != null)
+            {
+                return View();
+            }
+            return RedirectToAction("AccessDenied", "Users");
+        }
+
+        public JsonResult LoadProfile()
+        {
+            var Id = Int32.Parse(HttpContext.Session.GetString("Id"));
+            //Get the session with token and set authorize bearer token to API header
+            client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("JWToken"));
+            UserVM userVM = null;
+            var responseTask = client.GetAsync("User/" + Id); //Access data from department API
+            responseTask.Wait(); //Waits for the Task to complete execution.
+            var result = responseTask.Result;
+            if (result.IsSuccessStatusCode) // if access success
+            {
+                var readTask = result.Content.ReadAsAsync<IList<UserVM>>(); //Get all the data from the API
+                readTask.Wait();
+                userVM = readTask.Result[0];
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Server Error");
+            }
+            return Json(userVM);
+        }
 
         protected string[] GetTokenInfo(string token)
         {
@@ -163,13 +202,16 @@ namespace Client.Controllers
             };
             var claims = handler.ValidateToken(token, validations, out var tokenSecure);
             IEnumerable<Claim> data = claims.Claims;
-            result[0] = data.SingleOrDefault(p => p.Type == "Email").Value;
+            result[0] = data.SingleOrDefault(p => p.Type == "Id").Value;
             result[1] = data.SingleOrDefault(p => p.Type == "Role").Value;
             result[2] = data.SingleOrDefault(p => p.Type == "App").Value;
             result[3] = data.SingleOrDefault(p => p.Type == "Name").Value;
             return result;
         }
 
-        
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
