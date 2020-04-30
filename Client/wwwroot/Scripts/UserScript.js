@@ -2,6 +2,7 @@
 var Roles = [];
 var Apps = [];
 var Religions = [];
+var id = null;
 $(document).ready(function () {
     //Load Data Table
     table = $('#Users').DataTable({ //Nama table pada index
@@ -114,13 +115,14 @@ function ShowPass() {
 }
 
 function ShowModal() {
-    $("#createModal").modal('show');
+    $('#createModal').modal('show');
+    $('#check').prop('checked', false);
     $('#Email').attr('readonly', false);
     $('#Password').attr('readonly', true);
     $('#RoleOption').attr('disabled', false);
     $('#Id').val('');
     $('#Email').val('');
-    $('#Password').val('');
+    $('#Password').val('').attr('type', "password");
     $('#FullName').val('');
     $('#FirstName').val('');
     $('#LastName').val('');
@@ -181,11 +183,12 @@ function GetById(Id) {
         async: false,
         success: function (result) {
             debugger;
+            $('#check').prop('checked', false);
             $('#Id').val(result.id);
             $('#Email').attr('readonly', true);
             $('#Email').val(result.email);
             $('#Password').attr('readonly', false);
-            $('#Password').val(result.password);
+            $('#Password').val(result.password).attr('type',"password");
             $('#FullName').val(result.fullName);
             $('#FirstName').val(result.firstName);
             $('#LastName').val(result.lastName);
@@ -207,41 +210,44 @@ function GetById(Id) {
 }
 
 function Edit() {
-    var UserVM = new Object();
-    UserVM.Id = $('#Id').val();
-    UserVM.Email = $('#Email').val();
-    UserVM.Password = $('#Password').val();
-    UserVM.FullName = $('#FullName').val();
-    UserVM.FirstName = $('#FirstName').val();
-    UserVM.LastName = $('#LastName').val();
-    UserVM.BirthDate = $('#BirthDate').val();
-    UserVM.PhoneNumber = $('#PhoneNumber').val();
-    UserVM.Address = $('#Address').val();
-    UserVM.RoleId = $('#RoleOption').val();
-    UserVM.App_Type = $('#AppOption').val();
-    UserVM.ReligionId = $('#ReligionOption').val();
-    $.ajax({
-        type: 'POST',
-        url: '/Users/InsertOrUpdate/',
-        data: UserVM
-    }).then((result) => {
-        //debugger;
-        if (result.statusCode === 200) {
-            Swal.fire({
-                position: 'center',
-                type: 'success',
-                title: 'User Edit Succesfully'
-            }).then((result) => {
-                if (result.value) {
-                    table.ajax.reload();
-                }
-            });
-        }
-        else {
-            Swal.fire('Error', 'Failed to Edit User', 'error');
-            ShowModal();
-        }
-    });
+    var status = checkForm();
+    if (status === true) {
+        var UserVM = new Object();
+        UserVM.Id = $('#Id').val();
+        UserVM.Email = $('#Email').val();
+        UserVM.Password = $('#Password').val();
+        UserVM.FullName = $('#FullName').val();
+        UserVM.FirstName = $('#FirstName').val();
+        UserVM.LastName = $('#LastName').val();
+        UserVM.BirthDate = $('#BirthDate').val();
+        UserVM.PhoneNumber = $('#PhoneNumber').val();
+        UserVM.Address = $('#Address').val();
+        UserVM.RoleId = $('#RoleOption').val();
+        UserVM.App_Type = $('#AppOption').val();
+        UserVM.ReligionId = $('#ReligionOption').val();
+        $.ajax({
+            type: 'POST',
+            url: '/Users/InsertOrUpdate/',
+            data: UserVM
+        }).then((result) => {
+            //debugger;
+            if (result.statusCode === 200) {
+                Swal.fire({
+                    position: 'center',
+                    type: 'success',
+                    title: 'User Edit Succesfully'
+                }).then((result) => {
+                    if (result.value) {
+                        table.ajax.reload();
+                    }
+                });
+            }
+            else {
+                Swal.fire('Error', 'Failed to Edit User', 'error');
+                ShowModal();
+            }
+        });
+    }
 }
 
 function Delete(Id) {
@@ -277,4 +283,39 @@ function Delete(Id) {
             });
         }
     });
+}
+
+function checkForm() {
+    //debugger;
+    var val = $('#Password').val();
+    if (val !== "") {       
+        if (val.length < 6) {
+            Swal.fire('Error', 'Password Must Contain At Least Six Characters!', 'error');
+            return false;
+        }
+        re = /[0-9]/;
+        if (!re.test(val)) {
+            Swal.fire('Error', 'Password Must Contain At Least One Number (0-9)!', 'error');
+            return false;
+        }
+        re = /[a-z]/;
+        if (!re.test(val)) {
+            Swal.fire('Error', 'Password Must Contain At Least One Lowercase Letter (a-z)!', 'error');
+            return false;
+        }
+        re = /[A-Z]/;
+        if (!re.test(val)) {
+            Swal.fire('Error', 'Password Must Contain At Least One Uppercase Letter (A-Z)!', 'error');
+            return false;
+        }
+        re = /[@$!%*#?&]/;
+        if (!re.test(val)) {
+            Swal.fire('Error', 'Password Must Contain At Least One Special Character (@$!%*#?&)!', 'error');
+            return false;
+        }
+    } else {
+        Swal.fire('Error', 'Password Cannot Be Empty!', 'error');
+        return false;
+    }
+    return true;
 }

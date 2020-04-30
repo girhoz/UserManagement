@@ -1,6 +1,7 @@
 ﻿using API.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,10 +10,19 @@ namespace API.ViewModels
     public class UserVM : IEntity
     {
         public int Id { get; set; }
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
         public string Password { get; set; }
+
+        [Required]
         public int App_Type { get; set; }
+        [Required]
         public int RoleId { get; set; }
+
         public string AppName { get; set; }
         public string RoleName { get; set; }
         public string FullName { get; set; }
