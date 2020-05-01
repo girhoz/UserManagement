@@ -1,4 +1,4 @@
-﻿
+﻿@model API.ViewModels.UserVM
 @{
     Layout = null;
 }
@@ -39,9 +39,11 @@
     <div class="w3ls-login box box--big">
         <!-- form starts here -->
         <form action="#" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="agile-field-txt">
                 <label><i class="fa fa-user" aria-hidden="true"></i> Email </label>
                 <input type="text" name="Email" placeholder="Enter Email" required="" />
+                <span asp-validation-for="Email" class="alert-danger" style="color:white"></span>
             </div>
             <div class="agile-field-txt">
                 <label><i class="fa fa-unlock-alt" aria-hidden="true"></i> password </label>
@@ -51,19 +53,20 @@
                     <label class="check" for="check3">Show password</label>
                 </div>
                 <div class="agile-right">
-                    <a href="#">forgot password?</a>
+                    <input id="checkRemember" name="checkRemember" type="checkbox" value="remember me" onclick="myFunction()">
+                    <label class="check" for="checkRemember">Remember Me</label>
                 </div>
             </div>
             <!-- script for show password -->
             <script>
-				function myFunction() {
-					var x = document.getElementById("myInput");
-					if (x.type === "password") {
-						x.type = "text";
-					} else {
-						x.type = "password";
-					}
-				}
+                function myFunction() {
+                    var x = document.getElementById("myInput");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    } else {
+                        x.type = "password";
+                    }
+                }
             </script>
             <!-- //end script -->
             <input type="submit" value="LOGIN">
@@ -72,12 +75,13 @@
     <!-- //form ends here -->
     <!--copyright-->
     <div class="copy-wthree">
-        <p>
-            @*Don't have account? Click
-            <a href="#" target="_blank">Here</a>
-            To Register.*@
+        <p style="font-size:20px">
+            Forgot Your Password? Click
+                <a asp-controller="Users" asp-action="ForgotPassword">Here</a>
+                To Resend Password.
         </p>
     </div>
     <!--//copyright-->
 </body>
 </html>
+

@@ -50,7 +50,6 @@ namespace API.Controllers
             {
                 User user = new User();
                 //Generate pass with bcrypt 
-                //var guiPass = Guid.NewGuid().ToString();
                 var guiPass = userVM.Password;
                 var salt = BCryptHelper.GenerateSalt(12);
 
@@ -65,7 +64,7 @@ namespace API.Controllers
                     //Adding user detail to the user
                     UserDetails userDetails = new UserDetails();
                     userDetails.Id = user.Id;
-                    if(userVM.FullName == null)
+                    if (userVM.FullName == null)
                     {
                         userVM.FullName = userVM.FirstName + " " + userVM.LastName;
                     }
@@ -77,15 +76,15 @@ namespace API.Controllers
                     userDetails.PhoneNumber = userVM.PhoneNumber;
                     if (userVM.ReligionId == 0)
                     {
-                        userVM.ReligionId = 1;                      
+                        userVM.ReligionId = 1;
                     }
-                    userDetails.ReligionId = userVM.ReligionId; 
+                    userDetails.ReligionId = userVM.ReligionId;
                     if (userVM.BatchId == 0)
                     {
                         userVM.BatchId = 1;
                     }
                     userDetails.BatchId = userVM.BatchId;
-                    if(userVM.ClassId == 0)
+                    if (userVM.ClassId == 0)
                     {
                         userVM.ClassId = 1;
                     }
@@ -272,6 +271,22 @@ namespace API.Controllers
         public async Task<IEnumerable<ChartVM>> UserClassInfo()
         {
             return await _userRepository.GetUserClass();
+        }
+
+        [HttpPut]
+        [Route("ForgotPassword")]
+        public async Task<ActionResult> ForgotPassword(UserVM userVM)
+        {
+            var user = _userRepository.GetByEmail(userVM.Email);
+            var pass = userVM.Password;
+            var salt = BCryptHelper.GenerateSalt(12);
+            user.Password = BCryptHelper.HashPassword(pass, salt);
+            var result = await _userRepository.Put(user);
+            if (result != null)
+            {
+                return Ok("Password Updated");
+            }
+            return BadRequest("Password Update Unsucsessfull");
         }
     }
 }

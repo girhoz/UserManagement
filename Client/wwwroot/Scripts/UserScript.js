@@ -156,7 +156,7 @@ function ShowModal() {
     $('#createModal').modal('show');
     $('#check').prop('checked', false);
     $('#Email').attr('readonly', false);
-    //$('#Password').attr('readonly', true);
+    $('#Password').attr('readonly', true);
     $('#RoleOption').attr('disabled', false);
     $('#Id').val('');
     $('#Email').val('');
@@ -202,7 +202,7 @@ function Save() {
             Swal.fire({
                 position: 'center',
                 type: 'success',
-                title: 'User Added Succesfully'
+                title: 'User Added and Password Sended To Email'
             }).then((result) => {
                 if (result.value) {
                     table.ajax.reload();

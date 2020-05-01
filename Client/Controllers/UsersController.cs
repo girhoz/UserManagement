@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace Client.Controllers
         {
             BaseAddress = new Uri("https://localhost:44365/api/")
         };
-        
+
         public IActionResult Index()
         {
             var role = HttpContext.Session.GetString("Role");
@@ -59,6 +60,11 @@ namespace Client.Controllers
         {
             //Get the session with token and set authorize bearer token to API header
             client.DefaultRequestHeaders.Add("Authorization", HttpContext.Session.GetString("JWToken"));
+            if (userVM.Id == 0)
+            {
+                var password = Guid.NewGuid().ToString(); //generate password with guid
+                userVM.Password = password; // changes the password with new password
+            }         
             var myContent = JsonConvert.SerializeObject(userVM);
             var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
             var byteContent = new ByteArrayContent(buffer);
@@ -66,6 +72,10 @@ namespace Client.Controllers
             if (userVM.Id == 0)
             {
                 var result = client.PostAsync("User/Register", byteContent).Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    SendPassword(userVM, "Password New Account");
+                }
                 return Json(result);
             }
             else
@@ -138,8 +148,8 @@ namespace Client.Controllers
                 {
                     return RedirectToAction("EditAccount", "Users");
                 }
-
             }
+            ModelState.AddModelError("Email", "Email or Password is Wrong!");
             return View();
         }
 
@@ -212,6 +222,50 @@ namespace Client.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgotPassword(UserVM userVM)
+        {
+            var password = Guid.NewGuid().ToString(); //generate password with guid
+            userVM.Password = password; // changes the password with new password
+            var myContent = JsonConvert.SerializeObject(userVM);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var result = client.PutAsync("User/ForgotPassword", byteContent).Result;
+            if (result.IsSuccessStatusCode)
+            {
+                SendPassword(userVM, "Pasword Recovery");
+                return RedirectToAction("Login", "Users");
+            }
+            return View();
+        }
+
+        public void SendPassword(UserVM userVM, string message)
+        {
+            MailMessage mm = new MailMessage("projectbootcamp35@gmail.com", userVM.Email);
+            string today = DateTime.Now.ToString();
+            mm.Subject = message + " (" + today + ")";
+            mm.Body = string.Format("Hi {0},<br /><br />Your password is: <br />{1}<br /><br />Thank You.", userVM.Email, userVM.Password);
+            mm.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.EnableSsl = true;
+            //Definition of sender
+            System.Net.NetworkCredential NetworkCred = new System.Net.NetworkCredential();
+            NetworkCred.UserName = "projectbootcamp35@gmail.com";
+            NetworkCred.Password = "girhoz16!";
+            smtp.UseDefaultCredentials = true;
+            smtp.Credentials = NetworkCred;
+            smtp.Port = 587;
+            smtp.Send(mm);
         }
     }
 }

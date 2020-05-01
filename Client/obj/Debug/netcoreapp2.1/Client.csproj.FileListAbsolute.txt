@@ -43,3 +43,4 @@ D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.csproj.CopyCompl
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.dll
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.pdb
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Charts\Index.g.cshtml.cs
+D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\ForgotPassword.g.cshtml.cs
