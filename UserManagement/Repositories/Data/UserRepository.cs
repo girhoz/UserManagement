@@ -49,5 +49,45 @@ namespace API.Repositories.Data
                 return data;
             }
         }
+
+        public async Task<IEnumerable<ChartVM>> GetUserApp()
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
+            {
+                var spName = "SP_UserAppInfo_UserApplication";
+                var data = await connection.QueryAsync<ChartVM>(spName, commandType: CommandType.StoredProcedure);
+                return data;
+            }
+        }
+
+        public async Task<IEnumerable<ChartVM>> GetUserReligion()
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
+            {
+                var spName = "SP_UserReligionInfo_UserUserDetailsReligion";
+                var data = await connection.QueryAsync<ChartVM>(spName, commandType: CommandType.StoredProcedure);
+                return data;
+            }
+        }
+
+        public async Task<IEnumerable<ChartVM>> GetUserBatch()
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
+            {
+                var spName = "SP_UserBatchInfo_UserUserDetailsBatch";
+                var data = await connection.QueryAsync<ChartVM>(spName, commandType: CommandType.StoredProcedure);
+                return data;
+            }
+        }
+
+        public async Task<IEnumerable<ChartVM>> GetUserClass()
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
+            {
+                var spName = "SP_UserClassInfo_UserUserDetailsClass";
+                var data = await connection.QueryAsync<ChartVM>(spName, commandType: CommandType.StoredProcedure);
+                return data;
+            }
+        }
     }
 }

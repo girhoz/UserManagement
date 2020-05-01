@@ -241,5 +241,37 @@ namespace API.Controllers
         {
             return await _userRepository.Delete(id);
         }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet]
+        [Route("UserAppInfo")]
+        public async Task<IEnumerable<ChartVM>> UserAppInfo()
+        {
+            return await _userRepository.GetUserApp();
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet]
+        [Route("UserReligionInfo")]
+        public async Task<IEnumerable<ChartVM>> UserReligionInfo()
+        {
+            return await _userRepository.GetUserReligion();
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet]
+        [Route("UserBatchInfo")]
+        public async Task<IEnumerable<ChartVM>> UserBatchInfo()
+        {
+            return await _userRepository.GetUserBatch();
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet]
+        [Route("UserClassInfo")]
+        public async Task<IEnumerable<ChartVM>> UserClassInfo()
+        {
+            return await _userRepository.GetUserClass();
+        }
     }
 }

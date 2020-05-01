@@ -17,6 +17,8 @@ D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.TagHelpers.input
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.TagHelpers.output.cache
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.RazorCoreGenerate.cache
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Applications\Index.g.cshtml.cs
+D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Batches\Index.g.cshtml.cs
+D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Classes\Index.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Home\About.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Home\Contact.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Home\Index.g.cshtml.cs
@@ -40,5 +42,4 @@ D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.Views.pdb
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.csproj.CopyComplete
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.dll
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.pdb
-D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Batches\Index.g.cshtml.cs
-D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Classes\Index.g.cshtml.cs
+D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Charts\Index.g.cshtml.cs
