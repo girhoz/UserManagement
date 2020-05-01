@@ -60,7 +60,7 @@ namespace API.Controllers
                 var result = await _userRepository.Post(user);
                 if (result != null)
                 {
-                    //Adding role member to the user 
+                    //Adding role to the user 
                     await _roleRepository.InsertUserRoles(user.Id, userVM.RoleId);
                     //Adding user detail to the user
                     UserDetails userDetails = new UserDetails();
@@ -75,14 +75,21 @@ namespace API.Controllers
                     userDetails.Address = userVM.Address;
                     userDetails.BirthDate = userVM.BirthDate;
                     userDetails.PhoneNumber = userVM.PhoneNumber;
-                    if (userVM.ReligionId != 0)
+                    if (userVM.ReligionId == 0)
                     {
-                        userDetails.ReligionId = userVM.ReligionId;
+                        userVM.ReligionId = 1;                      
                     }
-                    else
+                    userDetails.ReligionId = userVM.ReligionId; 
+                    if (userVM.BatchId == 0)
                     {
-                        userDetails.ReligionId = 1;
-                    }                  
+                        userVM.BatchId = 1;
+                    }
+                    userDetails.BatchId = userVM.BatchId;
+                    if(userVM.ClassId == 0)
+                    {
+                        userVM.ClassId = 1;
+                    }
+                    userDetails.ClassId = userVM.ClassId;
                     await _userDetailsRepository.Post(userDetails);
                     return Ok("Register Succesfull!");
                 }
@@ -204,6 +211,14 @@ namespace API.Controllers
             if (userVM.ReligionId != userDetails.ReligionId && userVM.ReligionId != 0)
             {
                 userDetails.ReligionId = userVM.ReligionId;
+            }
+            if (userVM.BatchId != userDetails.BatchId && userVM.BatchId != 0)
+            {
+                userDetails.BatchId = userVM.BatchId;
+            }
+            if (userVM.ClassId != userDetails.ClassId && userVM.ClassId != 0)
+            {
+                userDetails.ClassId = userVM.ClassId;
             }
             if (userVM.WorkStatus != userDetails.WorkStatus)
             {

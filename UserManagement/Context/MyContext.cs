@@ -16,6 +16,8 @@ namespace API.Context
         public DbSet<User> User { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<Religion> Religion { get; set; }
+        public DbSet<Batch> Batch { get; set; }
+        public DbSet<Class> Class { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
 
         public DbSet<UserRoles> UserRoles { get; set; }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200427064208_addRoleModel")]
+    [Migration("20200430224021_addRoleModel")]
     partial class addRoleModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

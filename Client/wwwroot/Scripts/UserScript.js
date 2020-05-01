@@ -13,8 +13,8 @@ $(document).ready(function () {
             dataSrc: ""
         },
         "columnDefs": [
-            { "orderable": false, "targets": 9 },
-            { "searchable": false, "targets": 9 },
+            { "orderable": false, "targets": 11 },
+            { "searchable": false, "targets": 11 },
             { "searchable": false, "orderable": false, "targets": 0 }
         ],
         "columns": [
@@ -35,6 +35,8 @@ $(document).ready(function () {
                 }
             },
             { "data": "religionName", "name": "Religion" },
+            { "data": "batchName", "name": "Batch" },
+            { "data": "className", "name": "Class" },
             {
                 data: null, render: function (data, type, row) {
                     return '<button type="button" class="btn btn-warning" id="BtnEdit" data-toggle="tooltip" data-placement="top" title="Edit" onclick="return GetById(' + row.id + ')"><i class="mdi mdi-pencil"></i></button> &nbsp; <button type="button" class="btn btn-danger" id="BtnDelete" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return Delete(' + row.id + ')"><i class="mdi mdi-delete"></i></button>';
@@ -105,6 +107,42 @@ function LoadReligion(element) {
 }
 LoadReligion($('#ReligionOption'));
 
+//Tampung dan tampilkan batch kedalam selectoption
+function LoadBatch(element) {
+    $.ajax({
+        type: "Get",
+        url: "/Batches/LoadBatch",
+        success: function (data) {
+            Batches = data;
+            var $option = $(element);
+            $option.empty();
+            $option.append($('<option/>').val('0').text('Select Batch').hide());
+            $.each(Batches, function (i, val) {
+                $option.append($('<option/>').val(val.id).text(val.name));
+            });
+        }
+    });
+}
+LoadBatch($('#BatchOption'));
+
+//Tampung dan tampilkan class kedalam selectoption
+function LoadClass(element) {
+    $.ajax({
+        type: "Get",
+        url: "/Classes/LoadClass",
+        success: function (data) {
+            Classes = data;
+            var $option = $(element);
+            $option.empty();
+            $option.append($('<option/>').val('0').text('Select Class').hide());
+            $.each(Classes, function (i, val) {
+                $option.append($('<option/>').val(val.id).text(val.name));
+            });
+        }
+    });
+}
+LoadClass($('#ClassOption'));
+
 function ShowPass() {
     var x = document.getElementById("Password");
     if (x.type === "password") {
@@ -118,7 +156,7 @@ function ShowModal() {
     $('#createModal').modal('show');
     $('#check').prop('checked', false);
     $('#Email').attr('readonly', false);
-    $('#Password').attr('readonly', true);
+    //$('#Password').attr('readonly', true);
     $('#RoleOption').attr('disabled', false);
     $('#Id').val('');
     $('#Email').val('');
@@ -132,6 +170,8 @@ function ShowModal() {
     $('#RoleOption').val(0);
     $('#AppOption').val(0);
     $('#ReligionOption').val(0);
+    $('#BatchOption').val(0);
+    $('#ClassOption').val(0);
     $("#Save").show();
     $("#Edit").hide();
 }
@@ -150,6 +190,8 @@ function Save() {
     UserVM.RoleId = $('#RoleOption').val();
     UserVM.App_Type = $('#AppOption').val();
     UserVM.ReligionId = $('#ReligionOption').val();
+    UserVM.BatchId = $('#BatchOption').val();
+    UserVM.ClassId = $('#ClassOption').val();
     $.ajax({
         type: 'POST',
         url: '/Users/InsertOrUpdate/',
@@ -182,7 +224,7 @@ function GetById(Id) {
         dataType: "json",
         async: false,
         success: function (result) {
-            debugger;
+            //debugger;
             $('#check').prop('checked', false);
             $('#Id').val(result.id);
             $('#Email').attr('readonly', true);
@@ -199,6 +241,8 @@ function GetById(Id) {
             $('#RoleOption').val(result.roleId);
             $('#AppOption').val(result.app_Type);
             $('#ReligionOption').val(result.religionId);
+            $('#BatchOption').val(result.batchId);
+            $('#ClassOption').val(result.classId);
             $("#createModal").modal('show');
             $("#Save").hide();
             $('#Edit').show();
@@ -225,6 +269,8 @@ function Edit() {
         UserVM.RoleId = $('#RoleOption').val();
         UserVM.App_Type = $('#AppOption').val();
         UserVM.ReligionId = $('#ReligionOption').val();
+        UserVM.BatchId = $('#BatchOption').val();
+        UserVM.ClassId = $('#ClassOption').val();
         $.ajax({
             type: 'POST',
             url: '/Users/InsertOrUpdate/',

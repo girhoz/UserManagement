@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200427085449_addUserDetailsModel")]
+    [Migration("20200430224220_addUserDetailsModel")]
     partial class addUserDetailsModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,32 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TB_M_Application");
+                });
+
+            modelBuilder.Entity("API.Models.Batch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TB_M_Batch");
+                });
+
+            modelBuilder.Entity("API.Models.Class", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TB_M_Class");
                 });
 
             modelBuilder.Entity("API.Models.Religion", b =>
@@ -85,7 +111,11 @@ namespace API.Migrations
 
                     b.Property<string>("Address");
 
+                    b.Property<int?>("BatchId");
+
                     b.Property<DateTime?>("BirthDate");
+
+                    b.Property<int?>("ClassId");
 
                     b.Property<string>("FirstName");
 
@@ -101,22 +131,13 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("ClassId");
+
                     b.HasIndex("ReligionId");
 
-                    b.ToTable("TB_M_UserDetails");
-                });
-
-            modelBuilder.Entity("API.Models.UserRoles", b =>
-                {
-                    b.Property<int>("User_Id");
-
-                    b.Property<int>("Role_Id");
-
-                    b.HasKey("User_Id", "Role_Id");
-
-                    b.HasIndex("Role_Id");
-
-                    b.ToTable("TB_T_UserRoles");
+                    b.ToTable("TB_T_UserDetails");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
@@ -129,6 +150,14 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.UserDetails", b =>
                 {
+                    b.HasOne("API.Models.Batch", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId");
+
+                    b.HasOne("API.Models.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId");
+
                     b.HasOne("API.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("Id")
@@ -137,19 +166,6 @@ namespace API.Migrations
                     b.HasOne("API.Models.Religion", "Religion")
                         .WithMany()
                         .HasForeignKey("ReligionId");
-                });
-
-            modelBuilder.Entity("API.Models.UserRoles", b =>
-                {
-                    b.HasOne("API.Models.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("Role_Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

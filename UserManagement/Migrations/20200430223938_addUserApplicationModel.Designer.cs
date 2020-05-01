@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200427064133_addUserModel")]
-    partial class addUserModel
+    [Migration("20200430223938_addUserApplicationModel")]
+    partial class addUserApplicationModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    [Table("TB_M_UserDetails")]
+    [Table("TB_T_UserDetails")]
     public class UserDetails : IEntity
     {
         [ForeignKey("User"), Key]
@@ -21,8 +21,14 @@ namespace API.Models
         public string PhoneNumber { get; set; }
         [ForeignKey("Religion")]
         public int? ReligionId { get; set; }
+        [ForeignKey("Batch")]
+        public int? BatchId { get; set; }
+        [ForeignKey("Class")]
+        public int? ClassId { get; set; }
         public bool WorkStatus { get; set; }
         public User User { get; set; }
         public Religion Religion { get; set; }
+        public Batch Batch { get; set; }
+        public Class Class { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace API.Repositories.Data
 
         public async Task<IEnumerable<UserVM>> GetDetails()
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyNetCoreConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
             {
                 var spName = "SP_GetDetails_AllTable";
                 var data = await connection.QueryAsync<UserVM>(spName, commandType: CommandType.StoredProcedure);
@@ -41,7 +41,7 @@ namespace API.Repositories.Data
 
         public async Task<IEnumerable<UserVM>> GetDetailsById(int id)
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyNetCoreConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
             {
                 var spName = "SP_GetDetailsById_AllTable";
                 parameters.Add("@Id", id);

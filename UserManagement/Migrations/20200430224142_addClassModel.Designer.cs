@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200427064254_addUserRolesModel")]
-    partial class addUserRolesModel
+    [Migration("20200430224142_addClassModel")]
+    partial class addClassModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,45 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TB_M_Application");
+                });
+
+            modelBuilder.Entity("API.Models.Batch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TB_M_Batch");
+                });
+
+            modelBuilder.Entity("API.Models.Class", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TB_M_Class");
+                });
+
+            modelBuilder.Entity("API.Models.Religion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TB_M_Religion");
                 });
 
             modelBuilder.Entity("API.Models.Role", b =>
@@ -65,37 +104,11 @@ namespace API.Migrations
                     b.ToTable("TB_M_User");
                 });
 
-            modelBuilder.Entity("API.Models.UserRoles", b =>
-                {
-                    b.Property<int>("User_Id");
-
-                    b.Property<int>("Role_Id");
-
-                    b.HasKey("User_Id", "Role_Id");
-
-                    b.HasIndex("Role_Id");
-
-                    b.ToTable("TB_T_UserRoles");
-                });
-
             modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.HasOne("API.Models.Application", "Application")
                         .WithMany()
                         .HasForeignKey("App_Type")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("API.Models.UserRoles", b =>
-                {
-                    b.HasOne("API.Models.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("Role_Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("User_Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

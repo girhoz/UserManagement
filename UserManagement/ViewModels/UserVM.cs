@@ -33,6 +33,10 @@ namespace API.ViewModels
         public string PhoneNumber { get; set; }
         public int ReligionId { get; set; }
         public string ReligionName { get; set; }
+        public int BatchId { get; set; }
+        public string BatchName { get; set; }
+        public int ClassId { get; set; }
+        public string ClassName { get; set; }
         public bool WorkStatus { get; set; }
     }
 }

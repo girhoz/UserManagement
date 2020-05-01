@@ -23,7 +23,7 @@ namespace API.Repositories.Data
 
         public async Task<IEnumerable<UserRoles>> InsertUserRoles(int userId, int roleId)
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyNetCoreConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
             {
                 var spName = "SP_Insert_UserRoles";
                 parameters.Add("@UserId", userId);
@@ -35,7 +35,7 @@ namespace API.Repositories.Data
 
         public async Task<IEnumerable<Role>> GetRole(int userId)
         {
-            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyNetCoreConnection")))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
             {
                 var spName = "SP_GetRole_RoleUserRoles";
                 parameters.Add("@UserId", userId);

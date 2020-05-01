@@ -33,11 +33,13 @@ namespace UserManagement
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<MyContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("MyNetCoreConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("MyConnection")));
             services.AddScoped<UserRepository>();
             services.AddScoped<RoleRepository>();
             services.AddScoped<ApplicationRepository>();
             services.AddScoped<ReligionRepository>();
+            services.AddScoped<BatchRepository>();
+            services.AddScoped<ClassRepository>();
             services.AddScoped<UserDetailsRepository>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
