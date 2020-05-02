@@ -117,6 +117,8 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            ViewBag.Email = HttpContext.Session.GetString("Email");
+            ViewBag.Password = HttpContext.Session.GetString("Password");
             return View();
         }
 
@@ -139,6 +141,16 @@ namespace Client.Controllers
                 HttpContext.Session.SetString("Role", info[1]);
                 HttpContext.Session.SetString("App", info[2]);
                 HttpContext.Session.SetString("Name", info[3]);
+                if (userVM.checkRemember == "true")
+                {
+                    HttpContext.Session.SetString("Email", info[4]);
+                    HttpContext.Session.SetString("Password", userVM.Password);
+                }
+                else
+                {
+                    HttpContext.Session.Remove("Email");
+                    HttpContext.Session.Remove("Password");
+                }
                 HttpContext.Session.SetString("JWToken", token);
                 if (info[1] == "Admin")
                 {
@@ -197,9 +209,9 @@ namespace Client.Controllers
             return Json(userVM);
         }
 
-        protected string[] GetTokenInfo(string token)
+        protected List<string> GetTokenInfo(string token)
         {
-            string[] result = new string[4];
+            List<string> result = new List<string>();
             string secret = "sdfsdfsjdbf78sdyfssdfsdfbuidfs98gdfsdbf";
             var key = Encoding.ASCII.GetBytes(secret);
             var handler = new JwtSecurityTokenHandler();
@@ -212,10 +224,11 @@ namespace Client.Controllers
             };
             var claims = handler.ValidateToken(token, validations, out var tokenSecure);
             IEnumerable<Claim> data = claims.Claims;
-            result[0] = data.SingleOrDefault(p => p.Type == "Id").Value;
-            result[1] = data.SingleOrDefault(p => p.Type == "Role").Value;
-            result[2] = data.SingleOrDefault(p => p.Type == "App").Value;
-            result[3] = data.SingleOrDefault(p => p.Type == "Name").Value;
+            result.Add(data.SingleOrDefault(p => p.Type == "Id").Value);
+            result.Add(data.SingleOrDefault(p => p.Type == "Role").Value);
+            result.Add(data.SingleOrDefault(p => p.Type == "App").Value);
+            result.Add(data.SingleOrDefault(p => p.Type == "Name").Value);
+            result.Add(data.SingleOrDefault(p => p.Type == "Email").Value);
             return result;
         }
 

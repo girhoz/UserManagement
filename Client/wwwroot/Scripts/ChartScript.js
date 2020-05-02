@@ -21,7 +21,7 @@ function UserAppChart() {
                     }]
                 }),
                 resize: true,
-                colors: ['#009efb', '#55ce63', '#2f3d4a']
+                colors: ['#009efb', '#55ce63', '#2f3d4a', '#0051FF', '#00FFEC', '#1AD700', '#018284', '#01847C', '#258401', '#19BDFF']
             });
         }
     })
@@ -41,7 +41,7 @@ function UserReligionChart() {
                     }]
                 }),
                 resize: true,
-                colors: ['#009efb', '#55ce63', '#2f3d4a']
+                colors: ['#009efb', '#55ce63', '#2f3d4a', '#0051FF', '#00FFEC', '#1AD700', '#018284', '#01847C', '#258401', '#19BDFF']
             });
         }
     })
@@ -61,7 +61,7 @@ function UserBatchChart() {
                     }]
                 }),
                 resize: true,
-                colors: ['#009efb', '#55ce63', '#2f3d4a']
+                colors: ['#009efb', '#55ce63', '#2f3d4a', '#0051FF', '#00FFEC', '#1AD700', '#018284', '#01847C', '#258401', '#19BDFF']
             });
         }
     })
@@ -81,7 +81,7 @@ function UserClassChart() {
                     }]
                 }),
                 resize: true,
-                colors: ['#009efb', '#55ce63', '#2f3d4a']
+                colors: ['#009efb', '#55ce63', '#2f3d4a', '#0051FF', '#00FFEC', '#1AD700', '#018284', '#01847C', '#258401', '#19BDFF']
             });
         }
     })

@@ -3,6 +3,11 @@
     Layout = null;
 }
 
+@{ 
+    string email = ViewBag.Email;
+    string password = ViewBag.Password;
+}
+
 <!DOCTYPE HTML>
 <html>
 
@@ -42,18 +47,18 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="agile-field-txt">
                 <label><i class="fa fa-user" aria-hidden="true"></i> Email </label>
-                <input type="text" name="Email" placeholder="Enter Email" required="" />
+                <input type="text" name="Email" placeholder="Enter Email" required="" value="@email"/>
                 <span asp-validation-for="Email" class="alert-danger" style="color:white"></span>
             </div>
             <div class="agile-field-txt">
                 <label><i class="fa fa-unlock-alt" aria-hidden="true"></i> password </label>
-                <input type="password" name="Password" placeholder="Enter Password" required="" id="myInput" />
+                <input type="password" name="Password" placeholder="Enter Password" required="" id="myInput" value="@password" />
                 <div class="agile_label">
-                    <input id="check3" name="check3" type="checkbox" value="show password" onclick="myFunction()">
+                    <input id="check3" name="check3" type="checkbox" value="true" onclick="myFunction()">
                     <label class="check" for="check3">Show password</label>
                 </div>
                 <div class="agile-right">
-                    <input id="checkRemember" name="checkRemember" type="checkbox" value="remember me" onclick="myFunction()">
+                    <input id="checkRemember" name="checkRemember" type="checkbox" value="true">
                     <label class="check" for="checkRemember">Remember Me</label>
                 </div>
             </div>
@@ -69,7 +74,7 @@
                 }
             </script>
             <!-- //end script -->
-            <input type="submit" value="LOGIN">
+            <input id="login" type="submit" value="LOGIN" onclick="">
         </form>
     </div>
     <!-- //form ends here -->
@@ -77,8 +82,8 @@
     <div class="copy-wthree">
         <p style="font-size:20px">
             Forgot Your Password? Click
-                <a asp-controller="Users" asp-action="ForgotPassword">Here</a>
-                To Resend Password.
+            <a asp-controller="Users" asp-action="ForgotPassword">Here</a>
+            To Resend Password.
         </p>
     </div>
     <!--//copyright-->

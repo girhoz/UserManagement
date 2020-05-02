@@ -25,4 +25,3 @@ D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.AssemblyInf
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.RazorTargetAssemblyInfo.cache
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.dll
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.pdb
-D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.csprojAssemblyReference.cache

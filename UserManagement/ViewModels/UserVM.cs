@@ -38,5 +38,6 @@ namespace API.ViewModels
         public int ClassId { get; set; }
         public string ClassName { get; set; }
         public bool WorkStatus { get; set; }
+        public string checkRemember { get; set; }
     }
 }

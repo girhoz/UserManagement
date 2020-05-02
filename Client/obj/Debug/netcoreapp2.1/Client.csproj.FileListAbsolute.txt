@@ -18,6 +18,7 @@ D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.TagHelpers.outpu
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.RazorCoreGenerate.cache
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Applications\Index.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Batches\Index.g.cshtml.cs
+D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Charts\Index.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Classes\Index.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Home\About.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Home\Contact.g.cshtml.cs
@@ -32,6 +33,7 @@ D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_Lay
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_ValidationScriptsPartial.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\AccessDenied.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\EditAccount.g.cshtml.cs
+D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\ForgotPassword.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\Index.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\Login.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\_ViewImports.g.cshtml.cs
@@ -42,5 +44,3 @@ D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.Views.pdb
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.csproj.CopyComplete
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.dll
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.pdb
-D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Charts\Index.g.cshtml.cs
-D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\ForgotPassword.g.cshtml.cs
