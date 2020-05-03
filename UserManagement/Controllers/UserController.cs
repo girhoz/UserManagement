@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 
 namespace API.Controllers
 {
@@ -169,6 +170,30 @@ namespace API.Controllers
             {
                 //Update User
                 var user = await _userRepository.Get(id);
+                if (userVM.Password.Length < 6)
+                {
+                    return BadRequest("Password Must Contain At Least Six Characters!");
+                }
+                var re = new Regex(@"[0-9]+");
+                if (!re.IsMatch(userVM.Password))
+                {
+                    return BadRequest("Password Must Contain At Least One Number (0-9)!");
+                }
+                re = new Regex(@"[a-z]+"); ;
+                if (!re.IsMatch(userVM.Password))
+                {
+                    return BadRequest("Password Must Contain At Least One Lowercase Letter (a-z)!");
+                }
+                re = new Regex(@"[A-Z]+");
+                if (!re.IsMatch(userVM.Password))
+                {
+                    return BadRequest("Password Must Contain At Least One Uppercase Letter (A-Z)!");
+                }
+                re = new Regex(@"[@$!%*#?&]");
+                if (!re.IsMatch(userVM.Password))
+                {
+                    return BadRequest("Password Must Contain At Least One Special Character (@$!%*#?&)!");
+                }
                 if (userVM.Password != user.Password)
                 {
                     var pass = userVM.Password;
