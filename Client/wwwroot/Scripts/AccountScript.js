@@ -30,12 +30,16 @@ $(document).ready(function () {
             $('#Email').attr('readonly', true);
             $('#Email').val(result.email);
             $('#Password').val(result.password);
+            $('#Role').val(result.roleName);
+            $('#Application').val(result.appName);
             $('#FullName').val(result.fullName);
             $('#FirstName').val(result.firstName);
             $('#LastName').val(result.lastName);
             $('#BirthDate').val(moment(result.birthDate).format('YYYY-MM-DD'));
             $('#PhoneNumber').val(result.phoneNumber);
             $('#Address').val(result.address);
+            $('#Batch').val(result.batchName);
+            $('#Class').val(result.className);
             Religion = result.religionId;
             ReligionName = result.religionName;
         },
