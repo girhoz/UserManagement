@@ -94,6 +94,10 @@ namespace API.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<int>("FailCount");
+
+                    b.Property<DateTime?>("LockoutEnd");
+
                     b.Property<string>("Password");
 
                     b.HasKey("Id");

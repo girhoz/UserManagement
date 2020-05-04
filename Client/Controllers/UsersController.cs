@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using API.Models;
 using API.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -129,40 +130,55 @@ namespace Client.Controllers
             var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var result = client.PostAsync("User/Login", byteContent).Result;
-            if (result.IsSuccessStatusCode)
+            //Check Status LockedOut Account
+            var checkLock = client.GetAsync("User/GetUserByEmail/" + userVM.Email);
+            checkLock.Wait(); //Waits for the Task to complete execution.
+            var statusLock = checkLock.Result;
+            var readTask = statusLock.Content.ReadAsAsync<User>(); //Get all the data from the API
+            readTask.Wait();
+            var lockedTime = readTask.Result.LockoutEnd;
+            if (DateTime.Now < lockedTime)
             {
-                //Get token and role from token
-                var data = result.Content.ReadAsStringAsync().Result;
-                var token = "Bearer " + data;
-                var info = GetTokenInfo(data);
-                //Add token to session and role to session
-                HttpContext.Session.SetString("Id", info[0]);
-                HttpContext.Session.SetString("Role", info[1]);
-                HttpContext.Session.SetString("App", info[2]);
-                HttpContext.Session.SetString("Name", info[3]);
-                if (userVM.checkRemember == "true")
-                {
-                    HttpContext.Session.SetString("Email", info[4]);
-                    HttpContext.Session.SetString("Password", userVM.Password);
-                }
-                else
-                {
-                    HttpContext.Session.Remove("Email");
-                    HttpContext.Session.Remove("Password");
-                }
-                HttpContext.Session.SetString("JWToken", token);
-                if (info[1] == "Admin")
-                {
-                    return RedirectToAction("Index", "Users");
-                }
-                else
-                {
-                    return RedirectToAction("EditAccount", "Users");
-                }
+                return RedirectToAction("LockedOut", "Users");
             }
-            ModelState.AddModelError("Email", "Email or Password is Wrong!");
-            return View();
+            else
+            {
+                //Login
+                var result = client.PostAsync("User/Login", byteContent).Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    //Get token and role from token
+                    var data = result.Content.ReadAsStringAsync().Result;
+                    var token = "Bearer " + data;
+                    var info = GetTokenInfo(data);
+                    //Add token to session and role to session
+                    HttpContext.Session.SetString("Id", info[0]);
+                    HttpContext.Session.SetString("Role", info[1]);
+                    HttpContext.Session.SetString("App", info[2]);
+                    HttpContext.Session.SetString("Name", info[3]);
+                    if (userVM.checkRemember == "true")
+                    {
+                        HttpContext.Session.SetString("Email", info[4]);
+                        HttpContext.Session.SetString("Password", userVM.Password);
+                    }
+                    else
+                    {
+                        HttpContext.Session.Remove("Email");
+                        HttpContext.Session.Remove("Password");
+                    }
+                    HttpContext.Session.SetString("JWToken", token);
+                    if (info[1] == "Admin")
+                    {
+                        return RedirectToAction("Index", "Users");
+                    }
+                    else
+                    {
+                        return RedirectToAction("EditAccount", "Users");
+                    }
+                }
+                ModelState.AddModelError("Email", "Email or Password is Wrong!");
+                return View();
+            }
         }
 
         public IActionResult Logout()
@@ -233,6 +249,11 @@ namespace Client.Controllers
         }
 
         public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        public IActionResult LockedOut()
         {
             return View();
         }

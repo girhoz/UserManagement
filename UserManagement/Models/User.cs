@@ -15,6 +15,8 @@ namespace API.Models
         public int Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public int FailCount { get; set; }
+        public DateTime? LockoutEnd { get; set; }
         public Application Application { get; set; }
         [ForeignKey("Application")]
         public int App_Type { get; set; }

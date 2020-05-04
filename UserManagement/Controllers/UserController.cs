@@ -111,24 +111,37 @@ namespace API.Controllers
             }
             else
             {
-                var check = BCryptHelper.CheckPassword(userVM.Password, getUser.Password);
-                if (check == false)
+                //Lockout account
+                if (getUser.LockoutEnd != null && DateTime.Now < getUser.LockoutEnd)
                 {
-                    return BadRequest("Password Wrong!"); ;
+                    return BadRequest("Your Account is Locked, Please Try Again Later or Reset Your Password");
                 }
                 else
                 {
-                    //Get Role From User Login
-                    var dataRole = await _roleRepository.GetRole(getUser.Id);
-                    foreach (Role item in dataRole)
+                    var check = BCryptHelper.CheckPassword(userVM.Password, getUser.Password);
+                    if (check == false)
                     {
-                        userVM.RoleName = item.Name;
+                        //Lockout function
+                        await LockedOut(getUser);
+                        return BadRequest("Password Wrong!");
                     }
-                    //Get Data From User Detail
-                    var detailUser = await _userDetailsRepository.Get(getUser.Id);
+                    else
+                    {
+                        //Reset lockedout account count after succesfull login
+                        getUser.FailCount = 0;
+                        await _userRepository.Put(getUser);
 
-                    //Build JWToken
-                    var claims = new List<Claim>
+                        //Get Role From User Login
+                        var dataRole = await _roleRepository.GetRole(getUser.Id);
+                        foreach (Role item in dataRole)
+                        {
+                            userVM.RoleName = item.Name;
+                        }
+                        //Get Data From User Detail
+                        var detailUser = await _userDetailsRepository.Get(getUser.Id);
+
+                        //Build JWToken
+                        var claims = new List<Claim>
                         {
                             new Claim("Id", getUser.Id.ToString()),
                             new Claim("Email", userVM.Email),
@@ -137,13 +150,14 @@ namespace API.Controllers
                             new Claim("Name", detailUser.FullName)
                         };
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
-                    var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                        var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                    var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
+                        var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
 
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                        return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    }
                 }
             }
         }
@@ -160,6 +174,13 @@ namespace API.Controllers
         public async Task<IEnumerable<UserVM>> DetailsById(int id)
         {
             return await _userRepository.GetDetailsById(id);
+        }
+
+        [HttpGet]
+        [Route("GetUserByEmail/{email}")]
+        public User GetUserByEmail(string email)
+        {
+            return _userRepository.GetByEmail(email);
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -306,12 +327,31 @@ namespace API.Controllers
             var pass = userVM.Password;
             var salt = BCryptHelper.GenerateSalt(12);
             user.Password = BCryptHelper.HashPassword(pass, salt);
+            //Reset Lockedout account count and time
+            user.FailCount = 0;
+            user.LockoutEnd = null;
             var result = await _userRepository.Put(user);
             if (result != null)
             {
                 return Ok("Password Updated");
             }
             return BadRequest("Password Update Unsucsessfull");
+        }
+
+        public async Task<ActionResult> LockedOut(User user)
+        {
+            var getUser = await _userRepository.Get(user.Id);
+            if (getUser.FailCount+1 != 3)
+            {
+                getUser.FailCount = getUser.FailCount + 1;
+            }
+            else
+            {
+                getUser.FailCount = 0;
+                getUser.LockoutEnd = DateTime.Now.AddMinutes(5);
+            }
+            await _userRepository.Put(getUser);
+            return Ok("Failed " + getUser.FailCount.ToString());
         }
     }
 }
