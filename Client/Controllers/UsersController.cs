@@ -118,6 +118,7 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            //Remember Me
             ViewBag.Email = HttpContext.Session.GetString("Email");
             ViewBag.Password = HttpContext.Session.GetString("Password");
             return View();
@@ -156,6 +157,7 @@ namespace Client.Controllers
                     HttpContext.Session.SetString("Role", info[1]);
                     HttpContext.Session.SetString("App", info[2]);
                     HttpContext.Session.SetString("Name", info[3]);
+                    //Remember Me
                     if (userVM.checkRemember == "true")
                     {
                         HttpContext.Session.SetString("Email", info[4]);

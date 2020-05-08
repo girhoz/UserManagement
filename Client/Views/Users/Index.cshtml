@@ -10,17 +10,13 @@
             <div class="card">
                 <div class="card-body">
                     <div>
+                        <h2 style="text-align: center;">Users Data</h2>
+                    </div>
+                    <div>
                         @*button for showing modal*@
                         <button onclick="ShowModal();" type="button" class="btn pull-left hidden-sm-down btn-success" style="margin-bottom:10px">
                             <i class="mdi mdi-plus-circle"></i> Create
                         </button>
-                        <h2 style="text-align: center;">Users Data</h2>
-                    </div>
-                    <div>
-                        @*button for Print PDF*@
-                        <button onclick="location.href='@Url.Action("exportPDF", "Employees")'" type="button" class="btn btn-info button button4"> PDF </button>
-                        <button onclick="location.href='@Url.Action("exportXLS", "Employees")'" type="button" class="btn btn-info button button4"> XLS </button>
-                        <button onclick="location.href='@Url.Action("exportCSV", "Employees")'" type="button" class="btn btn-info button button4"> CSV </button>
                     </div>
                     <div class="table-responsive m-t-10">
                         <table id="Users" class="table table-striped table-bordered">
@@ -29,9 +25,13 @@
                                     <th>No</th>
                                     <th>Email</th>
                                     <th>Name</th>
+                                    <th>Gender</th>
                                     <th>Role</th>
                                     <th>Application</th>
                                     <th>Address</th>
+                                    <th>State</th>
+                                    <th>District</th>
+                                    <th>Zipcode</th>
                                     <th>Phone Number</th>
                                     <th>Birth Date</th>
                                     <th>Religion</th>
@@ -128,6 +128,20 @@
                                 <input id="check" name="check" type="checkbox" value="show password" onclick="ShowPass()">
                                 <label class="check" for="check">Show password</label>
                             </div>
+                            <div class="col">
+                                <label for="Gender">Gender</label>
+                                <p>
+                                    <input type="radio" name="Gender" value="Male" checked>
+                                    Male
+                                    <br />
+                                    <input type="radio" name="Gender" value="Female">
+                                    Female
+                                    <br />
+                                    <input type="radio" name="Gender" value="Unspecified">
+                                    Unspecified
+                                    <br />
+                                </p>
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col">
@@ -137,6 +151,10 @@
                             <div class="col">
                                 <label for="AppOption">Application</label>
                                 <select class="form-control" id="AppOption" name="AppOption"></select>
+                            </div>
+                            <div class="col">
+                                <label for="ReligionOption">Religion</label>
+                                <select class="form-control" id="ReligionOption" name="ReligionOption"></select>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -148,15 +166,9 @@
                                 <label for="LastName">Last Name</label>
                                 <input name="LastName" class="form-control" placeholder="Last Name" type="text" id="LastName" />
                             </div>
-                        </div>
-                        <div class="row form-group">
                             <div class="col">
-                                <label for="FullName">Full Name</label>
-                                <input name="FullName" class="form-control" placeholder="Full Name" type="text" id="FullName" />
-                            </div>
-                            <div class="col">
-                                <label for="ReligionOption">Religion</label>
-                                <select class="form-control" id="ReligionOption" name="ReligionOption"></select>
+                                <label for="BirthDate">Birth Date</label>
+                                <input name="BirthDate" class="form-control" type="Date" id="BirthDate" />
                             </div>
                         </div>
                         <div class="row form-group">
@@ -165,8 +177,12 @@
                                 <input name="PhoneNumber" class="form-control" placeholder="Phone Number" type="text" id="PhoneNumber" />
                             </div>
                             <div class="col">
-                                <label for="BirthDate">Birth Date</label>
-                                <input name="BirthDate" class="form-control" type="Date" id="BirthDate" />
+                                <label for="BatchOption">Batch</label>
+                                <select class="form-control" id="BatchOption" name="BatchOption"></select>
+                            </div>
+                            <div class="col">
+                                <label for="ClassOption">Class</label>
+                                <select class="form-control" id="ClassOption" name="ClassOption"></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -175,12 +191,16 @@
                         </div>
                         <div class="row form-group">
                             <div class="col">
-                                <label for="BatchOption">Batch</label>
-                                <select class="form-control" id="BatchOption" name="BatchOption"></select>
+                                <label for="StateOption">State</label>
+                                <select class="form-control" id="StateOption" name="StateOption"></select>
                             </div>
                             <div class="col">
-                                <label for="ClassOption">Class</label>
-                                <select class="form-control" id="ClassOption" name="ClassOption"></select>
+                                <label for="DistrictOption">District</label>
+                                <select class="form-control" id="DistrictOption" name="DistrictOption"></select>
+                            </div>
+                            <div class="col">
+                                <label for="ZipcodeOption">Zipcode</label>
+                                <select class="form-control" id="ZipcodeOption" name="ZipcodeOption"></select>
                             </div>
                         </div>
                     </form>

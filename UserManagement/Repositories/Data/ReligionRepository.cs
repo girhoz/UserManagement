@@ -11,6 +11,7 @@ namespace API.Repositories.Data
     {
         public ReligionRepository(MyContext myContext) : base(myContext)
         {
+
         }
     }
 }

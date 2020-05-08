@@ -1,9 +1,13 @@
 ﻿using API.Base;
 using API.Context;
 using API.Repositories.Interface;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +23,6 @@ namespace API.Repositories
         {
             _myContext = myContext;
         }
-
 
         public async Task<TEntity> Delete(int id)
         {
@@ -55,6 +58,11 @@ namespace API.Repositories
             _myContext.Entry(entity).State = EntityState.Modified;
             await _myContext.SaveChangesAsync();
             return entity;
+        }
+
+        public TEntity GetByName(string name)
+        {
+            return _myContext.Set<TEntity>().SingleOrDefault(e => e.Name == name);
         }
     }
 }

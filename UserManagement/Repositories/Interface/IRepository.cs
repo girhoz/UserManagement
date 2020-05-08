@@ -12,5 +12,6 @@ namespace API.Repositories.Interface
         Task<T> Post(T entity);
         Task<T> Put(T entity);
         Task<T> Delete(int id);
+        T GetByName(string name);
     }
 }

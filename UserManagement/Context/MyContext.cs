@@ -19,13 +19,16 @@ namespace API.Context
         public DbSet<Batch> Batch { get; set; }
         public DbSet<Class> Class { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
+        public DbSet<State> State { get; set; }
+        public DbSet<District> District { get; set; }
+        public DbSet<Zipcode> Zipcode { get; set; }
 
         public DbSet<UserRoles> UserRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserRoles>()
-                .HasKey(u => new { u.User_Id, u.Role_Id });
+                .HasKey(u => new { u.User_Id, u.Role_Id });         
         }
     }
 }

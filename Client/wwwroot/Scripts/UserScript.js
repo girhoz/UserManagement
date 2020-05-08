@@ -4,6 +4,12 @@ var Apps = [];
 var Religions = [];
 var id = null;
 $(document).ready(function () {
+    $('#StateOption').change(function () {
+        LoadDistrict($(this).find(':selected').val())
+    })
+    $('#DistrictOption').change(function () {
+        LoadZipcode($(this).find(':selected').val())
+    })
     //Load Data Table
     table = $('#Users').DataTable({ //Nama table pada index
         "ajax": {
@@ -13,8 +19,8 @@ $(document).ready(function () {
             dataSrc: ""
         },
         "columnDefs": [
-            { "orderable": false, "targets": 11 },
-            { "searchable": false, "targets": 11 },
+            { "orderable": false, "targets": 15 },
+            { "searchable": false, "targets": 15 },
             { "searchable": false, "orderable": false, "targets": 0 }
         ],
         "columns": [
@@ -24,10 +30,14 @@ $(document).ready(function () {
                 }
             },
             { "data": "email", "name": "Email" },
-            { "data": "fullName", "name": "Name" },
+            { "data": "name", "name": "Name" },
+            { "data": "gender", "name": "Gender" },
             { "data": "roleName", "name": "Role" },
             { "data": "appName", "name": "Application" },
             { "data": "address", "name": "Address" },
+            { "data": "stateName", "name": "State" },
+            { "data": "districtName", "name": "District" },
+            { "data": "zipcodeName", "name": "Zipcode" },
             { "data": "phoneNumber", "name": "Phone Number" },
             {
                 "data": "birthDate", "render": function (data) {
@@ -143,6 +153,59 @@ function LoadClass(element) {
 }
 LoadClass($('#ClassOption'));
 
+function LoadState() {
+    $.ajax({
+        type: "Get",
+        url: "/States/LoadState",
+        success: function (data) {
+            States = data;
+            var $option = $('#StateOption');
+            $option.empty();
+            $option.append($('<option/>').val('0').text('Select State').hide());
+            $.each(States, function (i, val) {
+                $option.append($('<option/>').val(val.id).text(val.name));
+            });
+        }
+    });
+}
+
+function LoadDistrict(stateId) {
+    //debugger;
+    $('#DistrictOption').children().remove();
+    $('#ZipcodeOption').children().remove();
+    $.ajax({
+        type: "Get",
+        url: "/Districts/LoadDistrict/" + stateId,
+        success: function (data) {
+            Districts = data;
+            var $option = $('#DistrictOption');
+            $option.empty();
+            $option.append($('<option/>').val('0').text('Select District').hide());
+            $.each(Districts, function (i, val) {
+                debugger;
+                $option.append($('<option/>').val(val.id).text(val.name));
+            });
+        }
+    });
+}
+
+function LoadZipcode(districtId) {
+    $.ajax({
+        type: "Get",
+        url: "/Zipcodes/LoadZipcode/" + districtId,
+        success: function (data) {
+            Zipcodes = data;
+            var $option = $('#ZipcodeOption');
+            $option.empty();
+            $option.append($('<option/>').val('0').text('Select Zipcode').hide());
+            $.each(Zipcodes, function (i, val) {
+                $option.append($('<option/>').val(val.id).text(val.name));
+            });
+        }
+    });
+}
+LoadState();
+
 function ShowPass() {
     var x = document.getElementById("Password");
     if (x.type === "password") {
@@ -161,17 +224,20 @@ function ShowModal() {
     $('#Id').val('');
     $('#Email').val('');
     $('#Password').val('').attr('type', "password");
-    $('#FullName').val('');
     $('#FirstName').val('');
     $('#LastName').val('');
     $('#BirthDate').val('');
     $('#PhoneNumber').val('');
     $('#Address').val('');
+    $("input[name= Gender][value= Male]").prop('checked', true);
     $('#RoleOption').val(0);
     $('#AppOption').val(0);
     $('#ReligionOption').val(0);
     $('#BatchOption').val(0);
     $('#ClassOption').val(0);
+    $('#StateOption').val(0);
+    $('#DistrictOption').val(0);
+    $('#ZipcodeOption').val(0);
     $("#Save").show();
     $("#Edit").hide();
 }
@@ -181,9 +247,9 @@ function Save() {
     var UserVM = new Object();
     UserVM.Email = $('#Email').val();
     UserVM.Password = $('#Password').val();
-    UserVM.FullName = $('#FullName').val();
     UserVM.FirstName = $('#FirstName').val();
     UserVM.LastName = $('#LastName').val();
+    UserVM.Gender = $("input[name=Gender]:checked").val();
     UserVM.BirthDate = $('#BirthDate').val();
     UserVM.PhoneNumber = $('#PhoneNumber').val();
     UserVM.Address = $('#Address').val();
@@ -192,6 +258,9 @@ function Save() {
     UserVM.ReligionId = $('#ReligionOption').val();
     UserVM.BatchId = $('#BatchOption').val();
     UserVM.ClassId = $('#ClassOption').val();
+    UserVM.StateId = $('#StateOption').val();
+    UserVM.DistrictId = $('#DistrictOption').val();
+    UserVM.ZipcodeId = $('#ZipcodeOption').val();
     $.ajax({
         type: 'POST',
         url: '/Users/InsertOrUpdate/',
@@ -231,9 +300,9 @@ function GetById(Id) {
             $('#Email').val(result.email);
             $('#Password').attr('readonly', false);
             $('#Password').val(result.password).attr('type',"password");
-            $('#FullName').val(result.fullName);
             $('#FirstName').val(result.firstName);
             $('#LastName').val(result.lastName);
+            $("input[name= Gender][value= " + result.gender + "]").prop('checked', true);
             $('#BirthDate').val(moment(result.birthDate).format('YYYY-MM-DD'));
             $('#PhoneNumber').val(result.phoneNumber);
             $('#Address').val(result.address);
@@ -243,6 +312,10 @@ function GetById(Id) {
             $('#ReligionOption').val(result.religionId);
             $('#BatchOption').val(result.batchId);
             $('#ClassOption').val(result.classId);
+            debugger;
+            $('#StateOption').val(result.stateId);
+            $('#DistrictOption').val(result.districtId);
+            $('#ZipcodeOption').val(result.zipcodeId);
             $("#createModal").modal('show');
             $("#Save").hide();
             $('#Edit').show();
@@ -254,15 +327,15 @@ function GetById(Id) {
 }
 
 function Edit() {
-    var status = checkForm();
+    var status = checkPass();
     if (status === true) {
         var UserVM = new Object();
         UserVM.Id = $('#Id').val();
         UserVM.Email = $('#Email').val();
         UserVM.Password = $('#Password').val();
-        UserVM.FullName = $('#FullName').val();
         UserVM.FirstName = $('#FirstName').val();
         UserVM.LastName = $('#LastName').val();
+        UserVM.Gender = $("input[name=Gender]:checked").val();
         UserVM.BirthDate = $('#BirthDate').val();
         UserVM.PhoneNumber = $('#PhoneNumber').val();
         UserVM.Address = $('#Address').val();
@@ -331,7 +404,7 @@ function Delete(Id) {
     });
 }
 
-function checkForm() {
+function checkPass() {
     //debugger;
     var val = $('#Password').val();
     if (val !== "") {       

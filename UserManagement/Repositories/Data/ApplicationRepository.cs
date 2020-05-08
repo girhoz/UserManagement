@@ -11,6 +11,7 @@ namespace API.Repositories.Data
     {
         public ApplicationRepository(MyContext myContext) : base(myContext)
         {
+
         }
     }
 }

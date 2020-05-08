@@ -41,16 +41,26 @@ namespace API.Base
         [HttpPost]
         public async Task<ActionResult<TEntity>> Post(TEntity entity)
         {
-            await _repository.Post(entity);
-            return Ok("Insert Success");
+            var checkExist = _repository.GetByName(entity.Name);
+            if (checkExist == null)
+            {
+                await _repository.Post(entity);
+                return Ok("Insert Success");
+            }
+            return BadRequest("Item Already Exist");
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, TEntity entity)
         {
             entity.Id = id;
-            await _repository.Put(entity);
-            return Ok("Update Succesfull");
+            var checkExist = _repository.GetByName(entity.Name);
+            if (checkExist == null)
+            {
+                await _repository.Put(entity);
+                return Ok("Update Succesfull");
+            }
+            return BadRequest("Item Already Exist");
         }
 
         [HttpDelete("{id}")]

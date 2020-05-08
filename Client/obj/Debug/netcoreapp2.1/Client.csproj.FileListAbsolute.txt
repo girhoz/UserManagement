@@ -35,6 +35,7 @@ D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\Acces
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\EditAccount.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\ForgotPassword.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\Index.g.cshtml.cs
+D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\LockedOut.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\Login.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\_ViewImports.g.cshtml.cs
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\_ViewStart.g.cshtml.cs
@@ -44,4 +45,3 @@ D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.Views.pdb
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.csproj.CopyComplete
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.dll
 D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Client.pdb
-D:\ASP.Net\UserManagement\Client\obj\Debug\netcoreapp2.1\Razor\Views\Users\LockedOut.g.cshtml.cs

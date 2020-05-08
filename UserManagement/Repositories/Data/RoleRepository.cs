@@ -15,10 +15,12 @@ namespace API.Repositories.Data
     {
         DynamicParameters parameters = new DynamicParameters();
         IConfiguration _configuration { get; }
+        private readonly MyContext _myContext;
 
-        public RoleRepository(MyContext myContext, IConfiguration configuration) : base(myContext)
+        public RoleRepository(MyContext myContext, IConfiguration configuration, MyContext MyContext) : base(myContext)
         {
             _configuration = configuration;
+            _myContext = MyContext;
         }
 
         public async Task<IEnumerable<UserRoles>> InsertUserRoles(int userId, int roleId)

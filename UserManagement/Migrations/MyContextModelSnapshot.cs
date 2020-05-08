@@ -58,6 +58,23 @@ namespace API.Migrations
                     b.ToTable("TB_M_Class");
                 });
 
+            modelBuilder.Entity("API.Models.District", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("StateId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("TB_M_District");
+                });
+
             modelBuilder.Entity("API.Models.Religion", b =>
                 {
                     b.Property<int>("Id")
@@ -82,6 +99,19 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TB_M_Role");
+                });
+
+            modelBuilder.Entity("API.Models.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TB_M_State");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
@@ -113,23 +143,29 @@ namespace API.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<int?>("BatchId");
+                    b.Property<int>("BatchId");
 
                     b.Property<DateTime?>("BirthDate");
 
-                    b.Property<int?>("ClassId");
+                    b.Property<int>("ClassId");
+
+                    b.Property<int>("DistrictId");
 
                     b.Property<string>("FirstName");
 
-                    b.Property<string>("FullName");
+                    b.Property<string>("Gender");
 
                     b.Property<string>("LastName");
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<int?>("ReligionId");
+                    b.Property<int>("ReligionId");
+
+                    b.Property<int>("StateId");
 
                     b.Property<bool>("WorkStatus");
+
+                    b.Property<int>("ZipcodeId");
 
                     b.HasKey("Id");
 
@@ -137,7 +173,13 @@ namespace API.Migrations
 
                     b.HasIndex("ClassId");
 
+                    b.HasIndex("DistrictId");
+
                     b.HasIndex("ReligionId");
+
+                    b.HasIndex("StateId");
+
+                    b.HasIndex("ZipcodeId");
 
                     b.ToTable("TB_T_UserDetails");
                 });
@@ -155,6 +197,31 @@ namespace API.Migrations
                     b.ToTable("TB_T_UserRoles");
                 });
 
+            modelBuilder.Entity("API.Models.Zipcode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DistrictId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
+
+                    b.ToTable("TB_M_Zipcode");
+                });
+
+            modelBuilder.Entity("API.Models.District", b =>
+                {
+                    b.HasOne("API.Models.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.HasOne("API.Models.Application", "Application")
@@ -167,11 +234,18 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Batch", "Batch")
                         .WithMany()
-                        .HasForeignKey("BatchId");
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.Class", "Class")
                         .WithMany()
-                        .HasForeignKey("ClassId");
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.User", "User")
                         .WithMany()
@@ -180,7 +254,18 @@ namespace API.Migrations
 
                     b.HasOne("API.Models.Religion", "Religion")
                         .WithMany()
-                        .HasForeignKey("ReligionId");
+                        .HasForeignKey("ReligionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.Zipcode", "Zipcode")
+                        .WithMany()
+                        .HasForeignKey("ZipcodeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("API.Models.UserRoles", b =>
@@ -193,6 +278,14 @@ namespace API.Migrations
                     b.HasOne("API.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("User_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("API.Models.Zipcode", b =>
+                {
+                    b.HasOne("API.Models.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

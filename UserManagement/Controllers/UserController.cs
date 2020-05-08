@@ -47,10 +47,18 @@ namespace API.Controllers
             {
                 return BadRequest("Email Already Used!");
             }
+            else if (!(userVM.Email.Contains("@gmail.com") || userVM.Email.Contains("@yahoo.com")))
+            {
+                return BadRequest("Invalid Email Address");
+            }
             else
             {
                 User user = new User();
                 //Generate pass with bcrypt 
+                if (userVM.Password == null)
+                {
+                    userVM.Password = Guid.NewGuid().ToString();
+                }
                 var guiPass = userVM.Password;
                 var salt = BCryptHelper.GenerateSalt(12);
 
@@ -65,11 +73,6 @@ namespace API.Controllers
                     //Adding user detail to the user
                     UserDetails userDetails = new UserDetails();
                     userDetails.Id = user.Id;
-                    if (userVM.FullName == null)
-                    {
-                        userVM.FullName = userVM.FirstName + " " + userVM.LastName;
-                    }
-                    userDetails.FullName = userVM.FullName;
                     userDetails.FirstName = userVM.FirstName;
                     userDetails.LastName = userVM.LastName;
                     userDetails.Address = userVM.Address;
@@ -90,6 +93,26 @@ namespace API.Controllers
                         userVM.ClassId = 1;
                     }
                     userDetails.ClassId = userVM.ClassId;
+                    if (userVM.StateId == 0)
+                    {
+                        userVM.StateId = 1;
+                    }
+                    userDetails.StateId = userVM.StateId;
+                    if (userVM.DistrictId == 0)
+                    {
+                        userVM.DistrictId = 1;
+                    }
+                    userDetails.DistrictId = userVM.DistrictId;
+                    if (userVM.ZipcodeId == 0)
+                    {
+                        userVM.ZipcodeId = 3;
+                    }
+                    if (userVM.Gender == null)
+                    {
+                        userVM.Gender = "Unspecified";
+                    }
+                    userDetails.Gender = userVM.Gender;
+                    userDetails.ZipcodeId = userVM.ZipcodeId;
                     await _userDetailsRepository.Post(userDetails);
                     return Ok("Register Succesfull!");
                 }
@@ -147,7 +170,7 @@ namespace API.Controllers
                             new Claim("Email", userVM.Email),
                             new Claim("Role", userVM.RoleName),
                             new Claim("App", getUser.App_Type.ToString()),
-                            new Claim("Name", detailUser.FullName)
+                            new Claim("Name", detailUser.FirstName + " " + detailUser.LastName)
                         };
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -229,10 +252,6 @@ namespace API.Controllers
             }
             //Update User Details
             var userDetails = await _userDetailsRepository.Get(id);
-            if (userVM.FullName != null)
-            {
-                userDetails.FullName = userVM.FullName;
-            }
             if (userVM.FirstName != null)
             {
                 userDetails.FirstName = userVM.FirstName;
@@ -240,6 +259,10 @@ namespace API.Controllers
             if (userVM.LastName != null)
             {
                 userDetails.LastName = userVM.LastName;
+            }
+            if (userVM.Gender != null)
+            {
+                userDetails.Gender = userVM.Gender;
             }
             if (userVM.Address != null)
             {
@@ -264,6 +287,18 @@ namespace API.Controllers
             if (userVM.ClassId != userDetails.ClassId && userVM.ClassId != 0)
             {
                 userDetails.ClassId = userVM.ClassId;
+            }
+            if (userVM.StateId != userDetails.StateId && userVM.StateId != 0)
+            {
+                userDetails.StateId = userVM.StateId;
+            }
+            if (userVM.DistrictId != userDetails.DistrictId && userVM.DistrictId != 0)
+            {
+                userDetails.DistrictId = userVM.DistrictId;
+            }
+            if (userVM.ZipcodeId != userDetails.ZipcodeId && userVM.ZipcodeId != 0)
+            {
+                userDetails.ZipcodeId = userVM.ZipcodeId;
             }
             if (userVM.WorkStatus != userDetails.WorkStatus)
             {

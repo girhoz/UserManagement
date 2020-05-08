@@ -13,6 +13,7 @@ namespace API.Models
     {
         [Key]
         public int Id { get; set; }
+        [RegularExpression(@"^[a-zA-Z0-9 ]*$", ErrorMessage = "Please enter correct name")]
         public string Name { get; set; }
     }
 }

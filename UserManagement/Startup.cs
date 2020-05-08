@@ -41,6 +41,9 @@ namespace UserManagement
             services.AddScoped<BatchRepository>();
             services.AddScoped<ClassRepository>();
             services.AddScoped<UserDetailsRepository>();
+            services.AddScoped<StateRepository>();
+            services.AddScoped<DistrictRepository>();
+            services.AddScoped<ZipcodeRepository>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
