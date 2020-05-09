@@ -3,13 +3,24 @@ var Roles = [];
 var Apps = [];
 var Religions = [];
 var id = null;
+State = 0;
+StateName = "Select State";
+District = 0;
+DistrictName = "Select District";
+Zipcode = 0;
+ZipcodeName = "Select Zipcode";
 $(document).ready(function () {
+    SetDate();
     $('#StateOption').change(function () {
-        LoadDistrict($(this).find(':selected').val())
-    })
+        District = 0;
+        DistrictName = "Select District";
+        LoadDistrict($(this).find(':selected').val());
+    });
     $('#DistrictOption').change(function () {
-        LoadZipcode($(this).find(':selected').val())
-    })
+        Zipcode = 0;
+        ZipcodeName = "Select Zipcode";
+        LoadZipcode($(this).find(':selected').val());
+    });
     //Load Data Table
     table = $('#Users').DataTable({ //Nama table pada index
         "ajax": {
@@ -144,7 +155,7 @@ function LoadClass(element) {
             Classes = data;
             var $option = $(element);
             $option.empty();
-            $option.append($('<option/>').val('0').text('Select Class').hide());
+            $option.append($('<option/>').val(State).text(StateName).hide());
             $.each(Classes, function (i, val) {
                 $option.append($('<option/>').val(val.id).text(val.name));
             });
@@ -161,7 +172,7 @@ function LoadState() {
             States = data;
             var $option = $('#StateOption');
             $option.empty();
-            $option.append($('<option/>').val('0').text('Select State').hide());
+            $option.append($('<option/>').val(State).text(StateName).hide());
             $.each(States, function (i, val) {
                 $option.append($('<option/>').val(val.id).text(val.name));
             });
@@ -180,9 +191,8 @@ function LoadDistrict(stateId) {
             Districts = data;
             var $option = $('#DistrictOption');
             $option.empty();
-            $option.append($('<option/>').val('0').text('Select District').hide());
+            $option.append($('<option/>').val(District).text(DistrictName).hide());
             $.each(Districts, function (i, val) {
-                debugger;
                 $option.append($('<option/>').val(val.id).text(val.name));
             });
         }
@@ -197,7 +207,7 @@ function LoadZipcode(districtId) {
             Zipcodes = data;
             var $option = $('#ZipcodeOption');
             $option.empty();
-            $option.append($('<option/>').val('0').text('Select Zipcode').hide());
+            $option.append($('<option/>').val(Zipcode).text(ZipcodeName).hide());
             $.each(Zipcodes, function (i, val) {
                 $option.append($('<option/>').val(val.id).text(val.name));
             });
@@ -219,11 +229,10 @@ function ShowModal() {
     $('#createModal').modal('show');
     $('#check').prop('checked', false);
     $('#Email').attr('readonly', false);
-    $('#Password').attr('readonly', true);
     $('#RoleOption').attr('disabled', false);
     $('#Id').val('');
     $('#Email').val('');
-    $('#Password').val('').attr('type', "password");
+    //$('#Password').val('').attr('type', "password");
     $('#FirstName').val('');
     $('#LastName').val('');
     $('#BirthDate').val('');
@@ -298,8 +307,7 @@ function GetById(Id) {
             $('#Id').val(result.id);
             $('#Email').attr('readonly', true);
             $('#Email').val(result.email);
-            $('#Password').attr('readonly', false);
-            $('#Password').val(result.password).attr('type',"password");
+            //$('#Password').val(result.password).attr('type',"password");
             $('#FirstName').val(result.firstName);
             $('#LastName').val(result.lastName);
             $("input[name= Gender][value= " + result.gender + "]").prop('checked', true);
@@ -312,10 +320,15 @@ function GetById(Id) {
             $('#ReligionOption').val(result.religionId);
             $('#BatchOption').val(result.batchId);
             $('#ClassOption').val(result.classId);
-            debugger;
-            $('#StateOption').val(result.stateId);
-            $('#DistrictOption').val(result.districtId);
-            $('#ZipcodeOption').val(result.zipcodeId);
+            State = result.stateId;
+            StateName = result.stateName;
+            LoadState();
+            District = result.districtId;
+            DistrictName = result.districtName;
+            LoadDistrict(State);
+            Zipcode = result.zipcodeId;
+            ZipcodeName = result.zipcodeName;
+            LoadZipcode(District);
             $("#createModal").modal('show');
             $("#Save").hide();
             $('#Edit').show();
@@ -327,46 +340,46 @@ function GetById(Id) {
 }
 
 function Edit() {
-    var status = checkPass();
-    if (status === true) {
-        var UserVM = new Object();
-        UserVM.Id = $('#Id').val();
-        UserVM.Email = $('#Email').val();
-        UserVM.Password = $('#Password').val();
-        UserVM.FirstName = $('#FirstName').val();
-        UserVM.LastName = $('#LastName').val();
-        UserVM.Gender = $("input[name=Gender]:checked").val();
-        UserVM.BirthDate = $('#BirthDate').val();
-        UserVM.PhoneNumber = $('#PhoneNumber').val();
-        UserVM.Address = $('#Address').val();
-        UserVM.RoleId = $('#RoleOption').val();
-        UserVM.App_Type = $('#AppOption').val();
-        UserVM.ReligionId = $('#ReligionOption').val();
-        UserVM.BatchId = $('#BatchOption').val();
-        UserVM.ClassId = $('#ClassOption').val();
-        $.ajax({
-            type: 'POST',
-            url: '/Users/InsertOrUpdate/',
-            data: UserVM
-        }).then((result) => {
-            //debugger;
-            if (result.statusCode === 200) {
-                Swal.fire({
-                    position: 'center',
-                    type: 'success',
-                    title: 'User Edit Succesfully'
-                }).then((result) => {
-                    if (result.value) {
-                        table.ajax.reload();
-                    }
-                });
-            }
-            else {
-                Swal.fire('Error', 'Failed to Edit User', 'error');
-                ShowModal();
-            }
-        });
-    }
+    var UserVM = new Object();
+    UserVM.Id = $('#Id').val();
+    UserVM.Email = $('#Email').val();
+    UserVM.Password = $('#Password').val();
+    UserVM.FirstName = $('#FirstName').val();
+    UserVM.LastName = $('#LastName').val();
+    UserVM.Gender = $("input[name=Gender]:checked").val();
+    UserVM.BirthDate = $('#BirthDate').val();
+    UserVM.PhoneNumber = $('#PhoneNumber').val();
+    UserVM.Address = $('#Address').val();
+    UserVM.RoleId = $('#RoleOption').val();
+    UserVM.App_Type = $('#AppOption').val();
+    UserVM.ReligionId = $('#ReligionOption').val();
+    UserVM.BatchId = $('#BatchOption').val();
+    UserVM.ClassId = $('#ClassOption').val();
+    UserVM.StateId = $('#StateOption').val();
+    UserVM.DistrictId = $('#DistrictOption').val();
+    UserVM.ZipcodeId = $('#ZipcodeOption').val();
+    $.ajax({
+        type: 'POST',
+        url: '/Users/InsertOrUpdate/',
+        data: UserVM
+    }).then((result) => {
+        //debugger;
+        if (result.statusCode === 200) {
+            Swal.fire({
+                position: 'center',
+                type: 'success',
+                title: 'User Edit Succesfully'
+            }).then((result) => {
+                if (result.value) {
+                    table.ajax.reload();
+                }
+            });
+        }
+        else {
+            Swal.fire('Error', 'Failed to Edit User', 'error');
+            ShowModal();
+        }
+    });
 }
 
 function Delete(Id) {
@@ -404,37 +417,20 @@ function Delete(Id) {
     });
 }
 
-function checkPass() {
-    //debugger;
-    var val = $('#Password').val();
-    if (val !== "") {       
-        if (val.length < 6) {
-            Swal.fire('Error', 'Password Must Contain At Least Six Characters!', 'error');
-            return false;
-        }
-        re = /[0-9]/;
-        if (!re.test(val)) {
-            Swal.fire('Error', 'Password Must Contain At Least One Number (0-9)!', 'error');
-            return false;
-        }
-        re = /[a-z]/;
-        if (!re.test(val)) {
-            Swal.fire('Error', 'Password Must Contain At Least One Lowercase Letter (a-z)!', 'error');
-            return false;
-        }
-        re = /[A-Z]/;
-        if (!re.test(val)) {
-            Swal.fire('Error', 'Password Must Contain At Least One Uppercase Letter (A-Z)!', 'error');
-            return false;
-        }
-        re = /[@$!%*#?&]/;
-        if (!re.test(val)) {
-            Swal.fire('Error', 'Password Must Contain At Least One Special Character (@$!%*#?&)!', 'error');
-            return false;
-        }
-    } else {
-        Swal.fire('Error', 'Password Cannot Be Empty!', 'error');
-        return false;
+function SetDate() {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
     }
-    return true;
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    today = yyyy + '-' + mm + '-' + dd;
+    yyyy = yyyy - 50;
+    min = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("BirthDate").setAttribute("max", today);
+    document.getElementById("BirthDate").setAttribute("min", min);
 }

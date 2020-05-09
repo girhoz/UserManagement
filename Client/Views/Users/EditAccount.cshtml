@@ -22,10 +22,27 @@
                                 <input name="Id" class="form-control" type="hidden" id="Id" />
                             </div>
                             <div class="col">
-                                <label for="Password" id="PasswordLabel">Password</label>
-                                <input name="Password" class="form-control" type="password" placeholder="Password" id="Password" />
-                                <input id="check3" name="check3" type="checkbox" value="show password" onclick="ShowPass()">
-                                <label class="check" for="check3">Show password</label>
+                                <label for="Gender">Gender</label>
+                                <p>
+                                    <input type="radio" name="Gender" value="Male" checked>
+                                    Male
+                                    <br />
+                                    <input type="radio" name="Gender" value="Female">
+                                    Female
+                                    <br />
+                                    <input type="radio" name="Gender" value="Unspecified">
+                                    Unspecified
+                                    <br />
+                                </p>
+                            </div>
+                            <div class="col">
+                                <label for="EditPassword">Password</label>
+                                <input name="Password" class="form-control" type="hidden" id="Password" />
+                                <br />
+                                @*button for showing modal*@
+                                <button onclick="ShowModal();" name="EditPassword" type="button" class="btn pull-left hidden-sm-down btn-success" style="margin-bottom:10px">
+                                    <i class="mdi mdi-settings"></i> Change Password
+                                </button>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -37,6 +54,10 @@
                                 <label for="LastName">Last Name</label>
                                 <input name="LastName" class="form-control" placeholder="Last Name" type="text" id="LastName" />
                             </div>
+                            <div class="col">
+                                <label for="BirthDate">Birth Date</label>
+                                <input name="BirthDate" class="form-control" type="Date" id="BirthDate" />
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col">
@@ -47,25 +68,9 @@
                                 <label for="Application">Application</label>
                                 <input name="Application" class="form-control" type="text" id="Application" readonly />
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col">
-                                <label for="FullName">Full Name</label>
-                                <input name="FullName" class="form-control" placeholder="Full Name" type="text" id="FullName" />
-                            </div>
                             <div class="col">
                                 <label for="ReligionOption">Religion</label>
                                 <select class="form-control" id="ReligionOption" name="ReligionOption"></select>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col">
-                                <label for="PhoneNumber">Phone Number</label>
-                                <input name="PhoneNumber" class="form-control" placeholder="Phone Number" type="text" id="PhoneNumber" />
-                            </div>
-                            <div class="col">
-                                <label for="BirthDate">Birth Date</label>
-                                <input name="BirthDate" class="form-control" type="Date" id="BirthDate" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -73,6 +78,24 @@
                             <textarea id="Address" class="form-control"></textarea>
                         </div>
                         <div class="row form-group">
+                            <div class="col">
+                                <label for="StateOption">State</label>
+                                <select class="form-control" id="StateOption" name="StateOption"></select>
+                            </div>
+                            <div class="col">
+                                <label for="DistrictOption">District</label>
+                                <select class="form-control" id="DistrictOption" name="DistrictOption"></select>
+                            </div>
+                            <div class="col">
+                                <label for="ZipcodeOption">Zipcode</label>
+                                <select class="form-control" id="ZipcodeOption" name="ZipcodeOption"></select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col">
+                                <label for="PhoneNumber">Phone Number</label>
+                                <input name="PhoneNumber" class="form-control" placeholder="Phone Number" type="text" id="PhoneNumber" />
+                            </div>
                             <div class="col">
                                 <label for="Batch">Batch</label>
                                 <input name="Batch" class="form-control" type="text" id="Batch" readonly />
@@ -88,6 +111,39 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="createModal"
+         data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title">Change Password</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row-xs-4">
+                        <label for="CurrentPassword">Current Password</label>
+                        <input name="CurrentPassword" class="form-control" placeholder="Current Password" type="password" id="CurrentPassword" />
+                        <input id="check" name="check" type="checkbox" value="show password" onclick="ShowPass1()">
+                        <label class="check" for="check">Show password</label>
+                    </div>
+
+                    <div class="form-group rpw-xs-4">
+                        <label for="NewPassword">New Password</label>
+                        <input name="NewPassword" class="form-control" placeholder="New Password" type="password" id="NewPassword" />
+                        <input id="check2" name="check2" type="checkbox" value="show password" onclick="ShowPass2()">
+                        <label class="check2" for="check2">Show password</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="Edit" onclick="ChangePass();" data-dismiss="modal" class="btn btn-success button button4">Update</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-warning button button4">Cancel</button>
                 </div>
             </div>
         </div>

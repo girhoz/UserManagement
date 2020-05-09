@@ -10,7 +10,6 @@ namespace API.ViewModels
     public class UserVM : IEntity
     {
         public int Id { get; set; }
-
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
         public string Password { get; set; }
@@ -41,5 +40,12 @@ namespace API.ViewModels
         public string DistrictName { get; set; }
         public int ZipcodeId { get; set; }
         public string ZipcodeName { get; set; }
+    }
+
+    public class ChangePassVM
+    {
+        public int Id { get; set; }
+        public string NewPassword { get; set; }
+        public string CurrentPassword { get; set; }
     }
 }

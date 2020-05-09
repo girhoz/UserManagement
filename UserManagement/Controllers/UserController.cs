@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.RegularExpressions;
+using System.Net.Mail;
 
 namespace API.Controllers
 {
@@ -54,11 +55,8 @@ namespace API.Controllers
             else
             {
                 User user = new User();
-                //Generate pass with bcrypt 
-                if (userVM.Password == null)
-                {
-                    userVM.Password = Guid.NewGuid().ToString();
-                }
+                //Generate pass with guid and bcrypt 
+                userVM.Password = Guid.NewGuid().ToString();
                 var guiPass = userVM.Password;
                 var salt = BCryptHelper.GenerateSalt(12);
 
@@ -76,6 +74,10 @@ namespace API.Controllers
                     userDetails.FirstName = userVM.FirstName;
                     userDetails.LastName = userVM.LastName;
                     userDetails.Address = userVM.Address;
+                    if (CheckDate(userVM.BirthDate) == false)
+                    {
+                        return BadRequest("Date Not Valid");
+                    }
                     userDetails.BirthDate = userVM.BirthDate;
                     userDetails.PhoneNumber = userVM.PhoneNumber;
                     if (userVM.ReligionId == 0)
@@ -114,6 +116,8 @@ namespace API.Controllers
                     userDetails.Gender = userVM.Gender;
                     userDetails.ZipcodeId = userVM.ZipcodeId;
                     await _userDetailsRepository.Post(userDetails);
+                    //Send Password To Email
+                    SendPassword(userVM, "Password New Account");
                     return Ok("Register Succesfull!");
                 }
                 else
@@ -207,43 +211,55 @@ namespace API.Controllers
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Edit(int id, UserVM userVM)
+        [HttpPut]
+        [Route("ChangePassword/{id}")]
+        public async Task<ActionResult> ChangePassword(int id, ChangePassVM passVM)
         {
-            if (userVM.Email != null || userVM.Password != null || userVM.App_Type != 0)
+            var user = await _userRepository.Get(id);
+            var check = BCryptHelper.CheckPassword(passVM.CurrentPassword, user.Password);
+            if (check == true)
             {
-                //Update User
-                var user = await _userRepository.Get(id);
-                if (userVM.Password.Length < 6)
+                if (passVM.NewPassword.Length < 6)
                 {
                     return BadRequest("Password Must Contain At Least Six Characters!");
                 }
                 var re = new Regex(@"[0-9]+");
-                if (!re.IsMatch(userVM.Password))
+                if (!re.IsMatch(passVM.NewPassword))
                 {
                     return BadRequest("Password Must Contain At Least One Number (0-9)!");
                 }
                 re = new Regex(@"[a-z]+"); ;
-                if (!re.IsMatch(userVM.Password))
+                if (!re.IsMatch(passVM.NewPassword))
                 {
                     return BadRequest("Password Must Contain At Least One Lowercase Letter (a-z)!");
                 }
                 re = new Regex(@"[A-Z]+");
-                if (!re.IsMatch(userVM.Password))
+                if (!re.IsMatch(passVM.NewPassword))
                 {
                     return BadRequest("Password Must Contain At Least One Uppercase Letter (A-Z)!");
                 }
                 re = new Regex(@"[@$!%*#?&]");
-                if (!re.IsMatch(userVM.Password))
+                if (!re.IsMatch(passVM.NewPassword))
                 {
                     return BadRequest("Password Must Contain At Least One Special Character (@$!%*#?&)!");
                 }
-                if (userVM.Password != user.Password)
-                {
-                    var pass = userVM.Password;
-                    var salt = BCryptHelper.GenerateSalt(12);
-                    user.Password = BCryptHelper.HashPassword(pass, salt);
-                }
+                var pass = passVM.NewPassword;
+                var salt = BCryptHelper.GenerateSalt(12);
+                user.Password = BCryptHelper.HashPassword(pass, salt);
+                await _userRepository.Put(user);
+                return Ok("Change Password Succesfull");
+            }
+            return BadRequest("Current Password Wrong");
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Edit(int id, UserVM userVM)
+        {
+            if (userVM.App_Type != 0)
+            {
+                //Update User
+                var user = await _userRepository.Get(id);
                 if (userVM.App_Type != user.App_Type && userVM.App_Type != 0)
                 {
                     user.App_Type = userVM.App_Type;
@@ -270,6 +286,10 @@ namespace API.Controllers
             }
             if (userVM.BirthDate != null)
             {
+                if (CheckDate(userVM.BirthDate) == false)
+                {
+                    return BadRequest("Date Not Valid");
+                }
                 userDetails.BirthDate = userVM.BirthDate;
             }
             if (userVM.PhoneNumber != null)
@@ -368,7 +388,9 @@ namespace API.Controllers
             var result = await _userRepository.Put(user);
             if (result != null)
             {
-                return Ok("Password Updated");
+                //Send Password To Email
+                SendPassword(userVM, "Pasword Recovery");
+                return Ok("Password Updated and Sended to Email");
             }
             return BadRequest("Password Update Unsucsessfull");
         }
@@ -376,7 +398,7 @@ namespace API.Controllers
         public async Task<ActionResult> LockedOut(User user)
         {
             var getUser = await _userRepository.Get(user.Id);
-            if (getUser.FailCount+1 != 3)
+            if (getUser.FailCount + 1 != 3)
             {
                 getUser.FailCount = getUser.FailCount + 1;
             }
@@ -387,6 +409,37 @@ namespace API.Controllers
             }
             await _userRepository.Put(getUser);
             return Ok("Failed " + getUser.FailCount.ToString());
+        }
+
+        public void SendPassword(UserVM userVM, string message)
+        {
+            MailMessage mm = new MailMessage("projectbootcamp35@gmail.com", userVM.Email);
+            string today = DateTime.Now.ToString();
+            mm.Subject = message + " (" + today + ")";
+            mm.Body = string.Format("Hi {0},<br /><br />Your password is: <br />{1}<br /><br />Thank You.", userVM.Email, userVM.Password);
+            mm.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.EnableSsl = true;
+            //Definition of sender
+            System.Net.NetworkCredential NetworkCred = new System.Net.NetworkCredential();
+            NetworkCred.UserName = "projectbootcamp35@gmail.com";
+            NetworkCred.Password = "girhoz16!";
+            smtp.UseDefaultCredentials = true;
+            smtp.Credentials = NetworkCred;
+            smtp.Port = 587;
+            smtp.Send(mm);
+        }
+
+        public bool CheckDate(DateTime? date)
+        {
+            DateTime today = DateTime.Now;
+            DateTime minDate = today.AddYears(-50);
+            if ((date >= today) || (date < minDate))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

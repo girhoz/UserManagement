@@ -118,15 +118,9 @@
                     <form>
                         <div class="row form-group">
                             <div class="col">
-                                <label for="Email" id="EmailLabel">Email</label>
+                                <label for="Email" id="EmailLabel">Email*</label>
                                 <input name="Email" class="form-control" type="text" placeholder="Email" id="Email" />
                                 <input name="Id" class="form-control" type="hidden" id="Id" />
-                            </div>
-                            <div class="col">
-                                <label for="Password" id="PasswordLabel">Password</label>
-                                <input name="Password" class="form-control" type="password" placeholder="Password" id="Password" />
-                                <input id="check" name="check" type="checkbox" value="show password" onclick="ShowPass()">
-                                <label class="check" for="check">Show password</label>
                             </div>
                             <div class="col">
                                 <label for="Gender">Gender</label>
@@ -142,14 +136,25 @@
                                     <br />
                                 </p>
                             </div>
+                            <div class="col">
+                                @*<label for="Password" id="PasswordLabel">Password</label>*@
+                                <input name="Password" class="form-control" type="hidden" placeholder="Password" id="Password" />
+                                <p style="color:red">
+                                    *Required field <br />
+                                    Please enter a valid email addres. <br />
+                                    Account password will automaticly send to email.
+                                </p>
+                                @*<input id="check" name="check" type="checkbox" value="show password" onclick="ShowPass()">
+                                    <label class="check" for="check">Show password</label>*@
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col">
-                                <label for="RoleOption">Role</label>
+                                <label for="RoleOption">Role*</label>
                                 <select class="form-control" id="RoleOption" name="RoleOption"></select>
                             </div>
                             <div class="col">
-                                <label for="AppOption">Application</label>
+                                <label for="AppOption">Application*</label>
                                 <select class="form-control" id="AppOption" name="AppOption"></select>
                             </div>
                             <div class="col">
@@ -167,7 +172,7 @@
                                 <input name="LastName" class="form-control" placeholder="Last Name" type="text" id="LastName" />
                             </div>
                             <div class="col">
-                                <label for="BirthDate">Birth Date</label>
+                                <label for="BirthDate">Birth Date*</label>
                                 <input name="BirthDate" class="form-control" type="Date" id="BirthDate" />
                             </div>
                         </div>
@@ -212,9 +217,6 @@
                 </div>
             </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Right sidebar -->
-        <!-- ============================================================== -->
     </div>
 </div>
 

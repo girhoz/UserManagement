@@ -13,11 +13,10 @@ D:\Latihan\UserManagement\UserManagement\bin\Debug\netcoreapp2.1\API.pdb
 D:\Latihan\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.dll
 D:\Latihan\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.pdb
 D:\ASP.Net\UserManagement\UserManagement\bin\Debug\netcoreapp2.1\API.dll
-D:\ASP.Net\UserManagement\UserManagement\bin\Debug\netcoreapp2.1\API.pdb
 D:\ASP.Net\UserManagement\UserManagement\bin\Debug\netcoreapp2.1\API.deps.json
 D:\ASP.Net\UserManagement\UserManagement\bin\Debug\netcoreapp2.1\API.runtimeconfig.json
 D:\ASP.Net\UserManagement\UserManagement\bin\Debug\netcoreapp2.1\API.runtimeconfig.dev.json
-D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.csprojAssemblyReference.cache
+D:\ASP.Net\UserManagement\UserManagement\bin\Debug\netcoreapp2.1\API.pdb
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.csproj.CoreCompileInputs.cache
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.RazorAssemblyInfo.cache
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.RazorAssemblyInfo.cs
@@ -26,3 +25,4 @@ D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.AssemblyInf
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.RazorTargetAssemblyInfo.cache
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.dll
 D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.pdb
+D:\ASP.Net\UserManagement\UserManagement\obj\Debug\netcoreapp2.1\API.csprojAssemblyReference.cache

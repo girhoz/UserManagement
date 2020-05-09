@@ -3,7 +3,7 @@
     Layout = null;
 }
 
-@{ 
+@{
     string email = ViewBag.Email;
     string password = ViewBag.Password;
 }
@@ -12,6 +12,21 @@
 <html>
 
 <head>
+    <script src="~/Scripts/Sweetalert2.js"></script>
+    @if ((string)TempData["Status"] == "Success")
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'New Password Sended to Email',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            }
+        </script>
+    }
     <title>Login Page</title>
     <!-- Meta-Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,7 +62,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="agile-field-txt">
                 <label><i class="fa fa-user" aria-hidden="true"></i> Email </label>
-                <input type="text" name="Email" placeholder="Enter Email" required="" value="@email"/>
+                <input type="text" name="Email" placeholder="Enter Email" required="" value="@email" />
                 <span asp-validation-for="Email" class="alert-danger" style="color:white"></span>
             </div>
             <div class="agile-field-txt">
@@ -89,4 +104,8 @@
     <!--//copyright-->
 </body>
 </html>
+
+@section scripts{
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+}
 
