@@ -56,8 +56,24 @@ $(document).ready(function () {
                 }
             },
             { "data": "religionName", "name": "Religion" },
-            { "data": "batchName", "name": "Batch" },
-            { "data": "className", "name": "Class" },
+            {
+                "data": "batchName", "name": "Batch", "render": function (data) {
+                    if (data === null) {
+                        return "Not Bootcamp";
+                    } else {
+                        return data;
+                    }
+                }
+            },
+            {
+                "data": "className", "name": "Class", "render": function (data) {
+                    if (data === null) {
+                        return "Not Bootcamp";
+                    } else {
+                        return data;
+                    }
+                }
+            },
             {
                 data: null, render: function (data, type, row) {
                     return '<button type="button" class="btn btn-warning" id="BtnEdit" data-toggle="tooltip" data-placement="top" title="Edit" onclick="return GetById(' + row.id + ')"><i class="mdi mdi-pencil"></i></button> &nbsp; <button type="button" class="btn btn-danger" id="BtnDelete" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return Delete(' + row.id + ')"><i class="mdi mdi-delete"></i></button>';
@@ -230,9 +246,10 @@ function ShowModal() {
     $('#check').prop('checked', false);
     $('#Email').attr('readonly', false);
     $('#RoleOption').attr('disabled', false);
+    $('#BatchOption').attr('disabled', false);
+    $('#ClassOption').attr('disabled', false);
     $('#Id').val('');
     $('#Email').val('');
-    //$('#Password').val('').attr('type', "password");
     $('#FirstName').val('');
     $('#LastName').val('');
     $('#BirthDate').val('');
@@ -318,7 +335,9 @@ function GetById(Id) {
             $('#RoleOption').val(result.roleId);
             $('#AppOption').val(result.app_Type);
             $('#ReligionOption').val(result.religionId);
+            $('#BatchOption').attr('disabled', true)
             $('#BatchOption').val(result.batchId);
+            $('#ClassOption').attr('disabled', true)
             $('#ClassOption').val(result.classId);
             State = result.stateId;
             StateName = result.stateName;
@@ -353,8 +372,6 @@ function Edit() {
     UserVM.RoleId = $('#RoleOption').val();
     UserVM.App_Type = $('#AppOption').val();
     UserVM.ReligionId = $('#ReligionOption').val();
-    UserVM.BatchId = $('#BatchOption').val();
-    UserVM.ClassId = $('#ClassOption').val();
     UserVM.StateId = $('#StateOption').val();
     UserVM.DistrictId = $('#DistrictOption').val();
     UserVM.ZipcodeId = $('#ZipcodeOption').val();

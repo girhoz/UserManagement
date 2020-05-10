@@ -23,10 +23,6 @@ namespace API.Models
         public string PhoneNumber { get; set; }
         [ForeignKey("Religion")]
         public int ReligionId { get; set; }
-        [ForeignKey("Batch")]
-        public int BatchId { get; set; }
-        [ForeignKey("Class")]
-        public int ClassId { get; set; }
         [ForeignKey("State")]
         public int StateId { get; set; }
         [ForeignKey("District")]
@@ -36,8 +32,6 @@ namespace API.Models
         public bool WorkStatus { get; set; }
         public User User { get; set; }
         public Religion Religion { get; set; }
-        public Batch Batch { get; set; }
-        public Class Class { get; set; }
         public State State { get; set; }
         public District District { get; set; }
         public Zipcode Zipcode { get; set; }

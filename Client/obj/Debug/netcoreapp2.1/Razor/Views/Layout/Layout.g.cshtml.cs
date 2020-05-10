@@ -106,7 +106,7 @@ using Client.Models;
             WriteLiteral("\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n");
             EndContext();
             BeginContext(208, 1616, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "08548dbd63f14301befaec2471bf8528", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6341ad906f5e446dafdfe147a51df71f", async() => {
                 BeginContext(214, 337, true);
                 WriteLiteral(@"
     <meta charset=""utf-8"">
@@ -119,7 +119,7 @@ using Client.Models;
     ");
                 EndContext();
                 BeginContext(551, 105, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "eb22371a7f5e43c59f1d8ff46638b389", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "fbf4d257f8a5412ebffec80483204d99", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -140,7 +140,7 @@ using Client.Models;
                 WriteLiteral("\r\n    <title>Learn API in .Net</title>\r\n    <!-- Bootstrap Core CSS -->\r\n    ");
                 EndContext();
                 BeginContext(733, 101, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "495fe63e14854d2c84b314e4ba5e1067", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "9ea2571824064f6c924f8aaf05df4f46", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -159,7 +159,7 @@ using Client.Models;
                 WriteLiteral("\r\n    <!-- Custom CSS -->\r\n    ");
                 EndContext();
                 BeginContext(865, 73, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "cdfad48bfed6470e9f3b4d841598ad97", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "b04f718228af4d56bd34a6e6e961dc74", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -178,7 +178,7 @@ using Client.Models;
                 WriteLiteral("\r\n    <!-- You can change the theme colors from here -->\r\n    ");
                 EndContext();
                 BeginContext(1000, 90, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "81698e54d2e04cf6958ae79a55562240", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "9c1fd0cb8d7e46fd99eb9d1944e16279", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -224,7 +224,7 @@ using Client.Models;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(1826, 11850, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "67c0e397f221407280db62b9ce14a1fb", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b9b98a09018d402ca8606c8f079ee174", async() => {
                 BeginContext(1866, 1340, true);
                 WriteLiteral(@"
     <!-- ============================================================== -->
@@ -256,7 +256,7 @@ using Client.Models;
                 WriteLiteral("                        <!--End Logo icon -->\r\n                        <!-- Logo text --><span>\r\n                            <!-- dark Logo text -->\r\n                            ");
                 EndContext();
                 BeginContext(3954, 116, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "745ff4d5f24141558ca1e4da20f6fa44", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "1229847ac07b4f35b4875e775efc8f1a", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -301,7 +301,7 @@ using Client.Models;
                         <li class=""nav-item"">");
                 EndContext();
                 BeginContext(5709, 155, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b14a35c076494ca9a4c56e2a9432a8ab", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a011bedd22784d6491e6efacbed0c5f1", async() => {
                     BeginContext(5829, 31, true);
                     WriteLiteral("<i class=\"fa fa-power-off\"></i>");
                     EndContext();
@@ -347,7 +347,7 @@ using Client.Models;
                     <div class=""profile-img""> ");
                 EndContext();
                 BeginContext(8498, 80, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "09b04b6a7b45418191b8e2bb74ac65f2", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "d3f3914a7d2c4834bb4c269419277068", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -388,7 +388,7 @@ using Client.Models;
                 WriteLiteral("                            <li>");
                 EndContext();
                 BeginContext(9353, 84, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "93d39837f7ee4ab0b0aac24ba4801ddb", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6504d0a786a74bf1abe9ca2d0d66a190", async() => {
                     BeginContext(9398, 35, true);
                     WriteLiteral("<i class=\"mdi mdi-table\"></i> Users");
                     EndContext();
@@ -412,7 +412,7 @@ using Client.Models;
                 WriteLiteral("</li>\r\n                            <li>");
                 EndContext();
                 BeginContext(9476, 90, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f4ca78066c17453f8b59549a12ca2913", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68b79be01790454e82738a36472a07b3", async() => {
                     BeginContext(9521, 41, true);
                     WriteLiteral("<i class=\"mdi mdi-account-key\"></i> Roles");
                     EndContext();
@@ -436,7 +436,7 @@ using Client.Models;
                 WriteLiteral("</li>\r\n                            <li>");
                 EndContext();
                 BeginContext(9605, 104, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "5ac916f2e16046b9b389918f8cf285f3", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "31a92abbe4744b8a8fe90a6a2ab3ce63", async() => {
                     BeginContext(9657, 48, true);
                     WriteLiteral("<i class=\"mdi mdi-application\"></i> Applications");
                     EndContext();
@@ -460,7 +460,7 @@ using Client.Models;
                 WriteLiteral("</li>\r\n                            <li>");
                 EndContext();
                 BeginContext(9748, 93, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1e144a31cd2745e8afbf17815f941575", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "15fb7276dd0348dc813f9dec5cdc8762", async() => {
                     BeginContext(9797, 40, true);
                     WriteLiteral("<i class=\"mdi mdi-church\"></i> Religions");
                     EndContext();
@@ -489,7 +489,7 @@ using Client.Models;
                                         ");
                 EndContext();
                 BeginContext(10212, 93, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c4d8d0d12fa044ee94e5a9425d50a1a5", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ac491a917a1947308e341c5fe69ddd30", async() => {
                     BeginContext(10259, 42, true);
                     WriteLiteral("<i class=\"mdi mdi-code-array\"></i> Batches");
                     EndContext();
@@ -513,7 +513,7 @@ using Client.Models;
                 WriteLiteral("\r\n                                        ");
                 EndContext();
                 BeginContext(10347, 96, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "904cde6bbb4346bc8ccea5e6cbe3024a", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a27f958ba04f48d1919c52709c095f52", async() => {
                     BeginContext(10394, 45, true);
                     WriteLiteral("<i class=\"mdi mdi-code-brackets\"></i> Classes");
                     EndContext();
@@ -537,7 +537,7 @@ using Client.Models;
                 WriteLiteral("\r\n                                    </li>\r\n                                </ul>\r\n                            </li>\r\n                            <li>");
                 EndContext();
                 BeginContext(10594, 90, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "44952e40ade94f4f8c83d14d76d1e439", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d323f8657cae4438be8c0dd46348e4be", async() => {
                     BeginContext(10640, 40, true);
                     WriteLiteral("<i class=\"mdi mdi-file-chart\"></i> Chart");
                     EndContext();
@@ -569,7 +569,7 @@ using Client.Models;
                 WriteLiteral("                        <li>");
                 EndContext();
                 BeginContext(10746, 104, false);
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f16c354a822a4136895c15213e786a0e", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f6cc7384e6264792814159455290f367", async() => {
                     BeginContext(10797, 49, true);
                     WriteLiteral("<i class=\"mdi mdi-account-circle\"></i> My Profile");
                     EndContext();

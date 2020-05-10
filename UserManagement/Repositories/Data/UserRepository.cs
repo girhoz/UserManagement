@@ -111,7 +111,7 @@ namespace API.Repositories.Data
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
             {
-                var spName = "SP_UserBatchInfo_UserUserDetailsBatch";
+                var spName = "SP_UserBatchInfo_BootCampBatch";
                 var data = await connection.QueryAsync<ChartVM>(spName, commandType: CommandType.StoredProcedure);
                 return data;
             }
@@ -121,10 +121,39 @@ namespace API.Repositories.Data
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
             {
-                var spName = "SP_UserClassInfo_UserUserDetailsClass";
+                var spName = "SP_UserClassInfo_BootCampClass";
                 var data = await connection.QueryAsync<ChartVM>(spName, commandType: CommandType.StoredProcedure);
                 return data;
             }
+        }
+
+        public async Task<IEnumerable<BootCamp>> InsertBootCamp(int userId, int batchId, int classId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyConnection")))
+            {
+                var spName = "SP_Insert_BootCamp";
+                parameters.Add("@UserId", userId);
+                parameters.Add("@BatchId", batchId);
+                parameters.Add("@ClassId", classId);
+                var data = await connection.QueryAsync<BootCamp>(spName, parameters, commandType: CommandType.StoredProcedure);
+                return data;
+            }
+        }
+
+        public UserVM GetBootCamp(int userId)
+        {
+            UserVM info = new UserVM();
+            var bootcamp = _myContext.BootCamp.Where(b => b.UserId == userId).SingleOrDefault();
+            if(bootcamp != null)
+            {
+                var batch = _myContext.Batch.Where(b => b.Id == bootcamp.BatchId).SingleOrDefault();
+                var clas = _myContext.Class.Where(b => b.Id == bootcamp.ClassId).SingleOrDefault();
+                info.BatchId = batch.Id;
+                info.ClassId = clas.Id;
+                info.BatchName = batch.Name;
+                info.ClassName = clas.Name;
+            }
+            return info;
         }
     }
 }

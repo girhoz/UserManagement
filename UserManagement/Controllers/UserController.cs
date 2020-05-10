@@ -85,16 +85,6 @@ namespace API.Controllers
                         userVM.ReligionId = 1;
                     }
                     userDetails.ReligionId = userVM.ReligionId;
-                    if (userVM.BatchId == 0)
-                    {
-                        userVM.BatchId = 1;
-                    }
-                    userDetails.BatchId = userVM.BatchId;
-                    if (userVM.ClassId == 0)
-                    {
-                        userVM.ClassId = 1;
-                    }
-                    userDetails.ClassId = userVM.ClassId;
                     if (userVM.StateId == 0)
                     {
                         userVM.StateId = 1;
@@ -116,6 +106,12 @@ namespace API.Controllers
                     userDetails.Gender = userVM.Gender;
                     userDetails.ZipcodeId = userVM.ZipcodeId;
                     await _userDetailsRepository.Post(userDetails);
+                    //Insert BootCamp
+                    if (userVM.BatchId != 0 && userVM.ClassId != 0)
+                    {
+                        await _userRepository.InsertBootCamp(user.Id, userVM.BatchId, userVM.ClassId);
+                    }
+                    //
                     //Send Password To Email
                     SendPassword(userVM, "Password New Account");
                     return Ok("Register Succesfull!");
@@ -139,7 +135,7 @@ namespace API.Controllers
             else
             {
                 //Lockout account
-                if (getUser.LockoutEnd != null && DateTime.Now < getUser.LockoutEnd)
+                if (getUser.LockStatus == true)
                 {
                     return BadRequest("Your Account is Locked, Please Try Again Later or Reset Your Password");
                 }
@@ -193,14 +189,38 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IEnumerable<UserVM>> Details()
         {
-            return await _userRepository.GetDetails();
+            var dataUser = await _userRepository.GetDetails();
+            foreach (UserVM user in dataUser)
+            {
+                var bootcamp = _userRepository.GetBootCamp(user.Id);
+                if(bootcamp != null)
+                {
+                    user.BatchId = bootcamp.BatchId;
+                    user.ClassId = bootcamp.ClassId;
+                    user.BatchName = bootcamp.BatchName;
+                    user.ClassName = bootcamp.ClassName;
+                }
+            }
+            return dataUser;
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("{id}")]
         public async Task<IEnumerable<UserVM>> DetailsById(int id)
         {
-            return await _userRepository.GetDetailsById(id);
+            var dataUser = await _userRepository.GetDetailsById(id);
+            foreach (UserVM user in dataUser)
+            {
+                var bootcamp = _userRepository.GetBootCamp(user.Id);
+                if (bootcamp != null)
+                {
+                    user.BatchId = bootcamp.BatchId;
+                    user.ClassId = bootcamp.ClassId;
+                    user.BatchName = bootcamp.BatchName;
+                    user.ClassName = bootcamp.ClassName;
+                }
+            }
+            return dataUser;
         }
 
         [HttpGet]
@@ -300,14 +320,6 @@ namespace API.Controllers
             {
                 userDetails.ReligionId = userVM.ReligionId;
             }
-            if (userVM.BatchId != userDetails.BatchId && userVM.BatchId != 0)
-            {
-                userDetails.BatchId = userVM.BatchId;
-            }
-            if (userVM.ClassId != userDetails.ClassId && userVM.ClassId != 0)
-            {
-                userDetails.ClassId = userVM.ClassId;
-            }
             if (userVM.StateId != userDetails.StateId && userVM.StateId != 0)
             {
                 userDetails.StateId = userVM.StateId;
@@ -384,7 +396,7 @@ namespace API.Controllers
             user.Password = BCryptHelper.HashPassword(pass, salt);
             //Reset Lockedout account count and time
             user.FailCount = 0;
-            user.LockoutEnd = null;
+            user.LockStatus = false;
             var result = await _userRepository.Put(user);
             if (result != null)
             {
@@ -405,7 +417,7 @@ namespace API.Controllers
             else
             {
                 getUser.FailCount = 0;
-                getUser.LockoutEnd = DateTime.Now.AddMinutes(5);
+                getUser.LockStatus = true;
             }
             await _userRepository.Put(getUser);
             return Ok("Failed " + getUser.FailCount.ToString());

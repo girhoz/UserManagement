@@ -140,8 +140,8 @@ namespace Client.Controllers
             var statusLock = checkLock.Result;
             var readTask = statusLock.Content.ReadAsAsync<User>(); //Get all the data from the API
             readTask.Wait();
-            var lockedTime = readTask.Result.LockoutEnd;
-            if (DateTime.Now < lockedTime)
+            var lockStatus = readTask.Result.LockStatus;
+            if (lockStatus == true)
             {
                 return RedirectToAction("LockedOut", "Users");
             }

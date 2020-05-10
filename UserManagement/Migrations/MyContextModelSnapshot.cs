@@ -45,6 +45,23 @@ namespace API.Migrations
                     b.ToTable("TB_M_Batch");
                 });
 
+            modelBuilder.Entity("API.Models.BootCamp", b =>
+                {
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("BatchId");
+
+                    b.Property<int>("ClassId");
+
+                    b.HasKey("UserId", "BatchId", "ClassId");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("ClassId");
+
+                    b.ToTable("TB_T_BootCamp");
+                });
+
             modelBuilder.Entity("API.Models.Class", b =>
                 {
                     b.Property<int>("Id")
@@ -126,7 +143,7 @@ namespace API.Migrations
 
                     b.Property<int>("FailCount");
 
-                    b.Property<DateTime?>("LockoutEnd");
+                    b.Property<bool>("LockStatus");
 
                     b.Property<string>("Password");
 
@@ -143,11 +160,7 @@ namespace API.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<int>("BatchId");
-
                     b.Property<DateTime?>("BirthDate");
-
-                    b.Property<int>("ClassId");
 
                     b.Property<int>("DistrictId");
 
@@ -168,10 +181,6 @@ namespace API.Migrations
                     b.Property<int>("ZipcodeId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BatchId");
-
-                    b.HasIndex("ClassId");
 
                     b.HasIndex("DistrictId");
 
@@ -214,6 +223,24 @@ namespace API.Migrations
                     b.ToTable("TB_M_Zipcode");
                 });
 
+            modelBuilder.Entity("API.Models.BootCamp", b =>
+                {
+                    b.HasOne("API.Models.Batch", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("API.Models.UserDetails", "UserDetails")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("API.Models.District", b =>
                 {
                     b.HasOne("API.Models.State", "State")
@@ -232,16 +259,6 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.UserDetails", b =>
                 {
-                    b.HasOne("API.Models.Batch", "Batch")
-                        .WithMany()
-                        .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.Class", "Class")
-                        .WithMany()
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("API.Models.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
